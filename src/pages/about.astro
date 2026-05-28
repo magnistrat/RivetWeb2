@@ -1,0 +1,33 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Footer from "../components/footer.astro";
+import Header from "../components/header.astro";
+---
+
+<Layout pageTitle="About Us">
+  <Header />
+  <section id="about" class="page-section">
+    <div class="bg-white rounded-lg shadow-xl p-8 md:p-12">
+        <h1 class="text-4xl font-extrabold text-rivet-navy mb-6">Your Local SEQ Risk Partner</h1>
+        <div class="flex flex-col md:flex-row gap-8">
+            <div class="md:w-2/3 space-y-4 text-lg text-steel-blue">
+                <p>Hi, I'm Carleton Chinner the founder of Rivet Risk Services, a consultant with one mission: to help South East Queensland's small businesses thrive, no matter the weather.I'm a solo business owner just like you. I don't have a 'risk committee.' I use practical tools that work.</p>
+                <p>After seeing the impacts of the 2011 and 2022 floods, I knew the "one-size-fits-all" approach from big firms wasn't working for the time-poor, multi-tasking small business owner. You don't need theory; you need practical, actionable steps.</p>
+                <p>My approach is different. I'm not an outside consultant; I'm your local partner. I operate across Brisbane, the Gold Coast, the Sunshine Coast, Ipswich, and Toowoomba. I understand the unique challenges of a flash storm in the city, river flooding, and the ever-present bushfire risk at our doorsteps.</p>
+                <p class="font-semibold text-rivet-navy">My promise is simple: No confusing jargon. No binders to gather dust. Just practical, affordable plans that give you confidence and control.</p>
+            </div>
+            <div class="md:w-1/3 bg-blue-50 rounded-lg p-6 border-l-4 border-steel-blue" >
+                <h2 class="text-2xl font-bold text-rivet-navy mb-4">Why Choose Rivet?</h2>
+                <ul class="list-disc list-inside space-y-2 text-steel-blue">
+                    <li><strong>Hyper-Local Focus:</strong> We  serve SEQ. We know the risks here.</li>
+                    <li><strong>Personal Consultant:</strong> You work directly with the expert. No juniors, no run-around.</li>
+                    <li><strong>Action-Oriented:</strong> We deliver tangible plans and checklists, not just reports.</li>
+                    <li><strong>Affordable & Scaled:</strong> Services designed and priced specifically for small businesses.</li>
+                    <li><strong>Empathetic:</strong> We know you're busy. We make this process simple and efficient.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+  </section>
+  <Footer />
+</Layout>

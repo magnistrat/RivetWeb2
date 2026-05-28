@@ -1,0 +1,51 @@
+---
+// Import the Astro Image component
+
+import LogoLight from '../assets/rivet_logo_landscape_light.svg';
+import LogoDark from '../assets/rivet_logo_landscape_dark.svg'; 
+
+
+const MENU_HEIGHT = 100;
+---
+<div class="logo">
+<a href="/" aria-label="Rivet Risk Services Home">
+  <LogoDark  height={MENU_HEIGHT} class="logo logo-dark" />
+  <LogoLight height={MENU_HEIGHT} class="logo logo-light" /> 
+ </a>
+  </div>
+
+  <style>
+  .logo {
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: left;
+  }
+
+  /* Force auto-width so the logo scales proportionally with the defined height */
+  .logo {
+    width: auto;
+  }
+
+  /* Hide the dark logo by default */
+  .logo-dark {
+    display: none;
+  }
+
+  /* Automatically swap logos based on the user's system/browser theme */
+  @media (prefers-color-scheme: dark) {
+    .logo-light {
+      display: none;
+    }
+    .logo-dark {
+      display: block;
+    }
+  }
+  @media (prefers-color-scheme: light) {
+    .logo-light {
+      display: block;
+    }
+    .logo-dark {
+      display: none;
+    }
+  }
+</style>
