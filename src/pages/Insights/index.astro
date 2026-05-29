@@ -5,7 +5,7 @@ import Footer from '../../components/footer.astro';
 import Header from '../../components/header.astro';
 import { getCollection } from 'astro:content';
 
-const allPosts = (await getCollection('blog')).sort(
+const allPosts = (await getCollection('posts')).sort(
 	(a : any, b : any) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 ); 
 
@@ -31,7 +31,7 @@ const formatDate = (date: Date) => {
 <p>Posts on Risk</p>
 <main>
 	<p>{allPosts.length} posts</p>
-<a href="../../content/posts/CMS_Coding.md"> test</a>
+<a href="CMS_Coding"> test</a>
 
 	<section class="archive-container">
 		{
@@ -45,7 +45,7 @@ const formatDate = (date: Date) => {
 						{
 							groupedPosts[year].map((post: any) => (
 								<li class="post-item" key={post.id}>
-									<a href={`/Insights/${post.id}/`} class="post-link">
+									<a href={`${post.id}/`} class="post-link">
 										<span class="post-date">{formatDate(post.data.pubDate)}</span>
 										<h3 class="post-title">{post.data.title}</h3>
 										{post.data.tags && post.data.tags.length > 0 && (
