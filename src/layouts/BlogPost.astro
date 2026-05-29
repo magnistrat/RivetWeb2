@@ -5,9 +5,9 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/footer.astro';
 import Header from '../components/header.astro';
 
-interface Props extends CollectionEntry<'blog'>['data'] {
+type Props = CollectionEntry<'blog'>['data'] & {
   headings: MarkdownHeading[];
-}
+};
 
 const { title, description, pubDate, updatedDate, headings, tags } = Astro.props;
 ---
@@ -688,11 +688,11 @@ const { title, description, pubDate, updatedDate, headings, tags } = Astro.props
                 </a>
               ))}
             </nav>
-          </div>
-          <button id="back-to-top" title="Back to top" aria-label="Back to top">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
-            <span>Back to top</span>
-          </button>
+            </div>
+            <button id="back-to-top" title="Back to top" aria-label="Back to top">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+              <span>Back to top</span>
+            </button>
           </div>
         </aside>
       )}
