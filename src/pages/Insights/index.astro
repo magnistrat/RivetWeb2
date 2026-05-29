@@ -6,9 +6,10 @@ import Footer from '../../components/footer.astro';
 import Header from '../../components/header.astro';
 
 
-const allPosts = (await getCollection('myPost')).sort(
+const allPosts = (await getCollection('myPost'));
+/* .sort(
 	(a : any, b : any) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+); */
 
 const groupedPosts = allPosts.reduce((acc: any, post: any) => {
 	const year = post.data.pubDate.getFullYear().toString();
@@ -29,11 +30,12 @@ const formatDate = (date: Date) => {
 ---
 <Layout />
 <Header />
-<p>Welcome to my blog!</p>
+<p>Posts on Risk</p>
 <main>
+	<p>{allPosts.length} posts</p>
 	<section class="archive-container">
 		{
-			sortedYears.map((year) => (
+			sortedYears.map((year: string) => (
 				<div class="year-section" id={`year-${year}`} key={year}>
 					<h2 class="year-title">
 						{year}
@@ -41,14 +43,14 @@ const formatDate = (date: Date) => {
 					</h2>
 					<ul class="post-list">
 						{
-							groupedPosts[year].map((post) => (
+							groupedPosts[year].map((post: any) => (
 								<li class="post-item" key={post.id}>
 									<a href={`/Insights/${post.id}/`} class="post-link">
 										<span class="post-date">{formatDate(post.data.pubDate)}</span>
 										<h3 class="post-title">{post.data.title}</h3>
 										{post.data.tags && post.data.tags.length > 0 && (
 											<div class="post-tags">
-												{post.data.tags.slice(0, 3).map((tag) => (
+												{post.data.tags.slice(0, 3).map((tag: any) => (
 													<span class="post-tag">#{tag}</span>
 												))}
 												{post.data.tags.length > 3 && (
