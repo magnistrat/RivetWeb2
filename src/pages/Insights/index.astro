@@ -6,11 +6,11 @@ import Footer from '../../components/footer.astro';
 import Header from '../../components/header.astro';
 
 
-const allPosts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+const allPosts = (await getCollection('myPost')).sort(
+	(a : any, b : any) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-const groupedPosts = allPosts.reduce((acc, post) => {
+const groupedPosts = allPosts.reduce((acc: any, post: any) => {
 	const year = post.data.pubDate.getFullYear().toString();
 	if (!acc[year]) {
 		acc[year] = [];
