@@ -1,15 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
 import "../../styles/global.css";
 import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/footer.astro';
 import Header from '../../components/header.astro';
+import { getCollection } from 'astro:content';
 
-
-const allPosts = (await getCollection('myPost'));
-/* .sort(
+const allPosts = (await getCollection('blog')).sort(
 	(a : any, b : any) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-); */
+); 
 
 const groupedPosts = allPosts.reduce((acc: any, post: any) => {
 	const year = post.data.pubDate.getFullYear().toString();
@@ -33,6 +31,8 @@ const formatDate = (date: Date) => {
 <p>Posts on Risk</p>
 <main>
 	<p>{allPosts.length} posts</p>
+<a href="../../content/posts/CMS_Coding.md"> test</a>
+
 	<section class="archive-container">
 		{
 			sortedYears.map((year: string) => (
