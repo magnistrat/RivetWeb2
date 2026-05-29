@@ -12,8 +12,10 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/mdx": "^6.0.1",
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.3.7",
+    "mdx": "^0.2.3",
     "starwind": "^2.0.0",
     "tailwind-merge": "^3.6.0",
     "tailwind-variants": "^3.2.2",
