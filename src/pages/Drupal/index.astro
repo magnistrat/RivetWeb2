@@ -1,0 +1,29 @@
+---
+import {Jsona} from "jsona";
+import {DrupalJsonApiParams} from "drupal-jsonapi-params";
+import type {TJsonApiBody} from "jsona/lib/JsonaTypes";
+
+import type { DrupalNode } from "../../types";
+import {getArticles} from "../../api/drupal";
+
+// Get all published articles.
+const articles = await getArticles();
+---
+<html lang="en">
+  <head>
+    <title>My news site</title>
+  </head>
+  <body>
+    <h1>My news site</h1>
+    <ul>
+      {articles.map((article: DrupalNode) => (
+        <li>
+          <a href={article.path.alias.replace("internal:en/", "")}>
+            <h2>{article.title}</h2>
+            <p>Published on {article.created}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </body>
+</html>
