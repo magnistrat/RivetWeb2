@@ -10,8 +10,8 @@ export const siteConfig = {
     "Rivet Risk Services provides comprehensive risk management and business continuity services tailored for your small business.",
   image: "/og-image.png",
   quickLinks: [
-    { label: "Features", href: "#features" },
-    { label: "How It Works", href: "#how-it-works" },
+    { label: "Services", href: "#features" },
+    { label: "Insights", href: "#how-it-works" },
     { label: "FAQ", href: "#faq" }
   ],
   legalLinks: [

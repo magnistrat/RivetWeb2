@@ -1,0 +1,66 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import BlogPost from '../../layouts/BlogPost.astro';
+import type { DrupalNode } from '../../types';
+import '../../styles/global.css';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('drupalPosts');
+  return articles.map((post) => ({
+    params: { slug: `${post.data.alias}` },
+    props: post,
+  }));
+}
+
+type Props = CollectionEntry<'drupalPosts'>;
+const post = Astro.props as Props;
+const { headings, bodyWithBookmarks } = getHeadingsAndBookmarkedBody(post.data.body);
+
+function getHeadingsAndBookmarkedBody(body: string) {
+  const headingRegex = /<(h[23])\b([^>]*)>([\s\S]*?)<\/\1>/gi;
+  const slugCounts = new Map<string, number>();
+  const headings: Array<{ depth: number; text: string; slug: string }> = [];
+
+  const html = body.replace(headingRegex, (full, tag, attrText, content) => {
+    const text = stripHtml(content).replace(/\s+/g, ' ').trim();
+    if (!text) return full;
+
+    const explicitIdMatch = attrText.match(/\sid=(?:"([^"]*)"|'([^']*)'|([^>\s]+))/i);
+    const explicitId = explicitIdMatch ? explicitIdMatch[1] || explicitIdMatch[2] || explicitIdMatch[3] : undefined;
+    let slug = explicitId ?? slugify(text);
+
+    const count = slugCounts.get(slug) ?? 0;
+    slugCounts.set(slug, count + 1);
+    if (count > 0) slug = `${slug}-${count + 1}`;
+
+    const depth = tag === 'h2' ? 2 : 3;
+    headings.push({ depth, text, slug });
+
+    const idAttr = explicitId ? '' : ` id="${slug}"`;
+    return `<${tag}${attrText}${idAttr}>${content}</${tag}>`;
+  });
+
+  return { headings, bodyWithBookmarks: html };
+}
+
+function stripHtml(html: string) {
+  return html.replace(/<[^>]+>/g, '').trim();
+}
+
+function slugify(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/<[^>]+>/g, '')
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+---
+
+<BlogPost {...post.data} headings={headings}>
+  <div set:html={bodyWithBookmarks} />
+</BlogPost>
+
+
+

@@ -198,7 +198,31 @@ const isDark = 'dark';
 	}
 	
 	applyTheme();
-	
+
+	function normalizePath(path) {
+		return path.replace(/\/$/, '') || '/';
+	}
+
+	function markCurrentNavLink() {
+		const currentPath = normalizePath(location.pathname);
+		document.querySelectorAll('nav .nav-links a, #mobile-menu a').forEach((link) => {
+			const linkPath = normalizePath(new URL(link.href, location.origin).pathname);
+			const isActive = linkPath === currentPath;
+			link.classList.toggle('active', isActive);
+			if (isActive) {
+				link.setAttribute('aria-current', 'page');
+			} else {
+				link.removeAttribute('aria-current');
+			}
+		});
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', markCurrentNavLink);
+	} else {
+		markCurrentNavLink();
+	}
+
 	themeToggle?.addEventListener('click', toggleThemeMenu);
 	themeMenu?.addEventListener('click', selectTheme);
 	
@@ -301,7 +325,8 @@ const isDark = 'dark';
 		color: var(--accent);
 	}
 	
-	.nav-center a {
+	header nav .nav-links a,
+	header .nav-center a {
 		padding: 0.5rem 0;
 		color: var(--text-secondary);
 		font-size: 0.875rem;
@@ -310,12 +335,17 @@ const isDark = 'dark';
 		border-bottom: 2px solid transparent;
 		transition: all 0.2s ease;
 	}
-	
-	.nav-center a:hover {
+
+	header nav .nav-links a:hover,
+	header nav .nav-links a:focus,
+	header .nav-center a:hover,
+	header .nav-center a:focus {
 		color: var(--accent);
 	}
-	
-	.nav-center a.active {
+
+	header nav .nav-links a.active,
+	header nav .nav-links a[aria-current="page"],
+	header .nav-center a.active {
 		color: var(--accent);
 		border-bottom-color: var(--accent);
 	}
@@ -361,4 +391,5 @@ const isDark = 'dark';
 		background-color: var(--bg-secondary);
 		color: var(--text-primary);
 	}
+  
 </style>

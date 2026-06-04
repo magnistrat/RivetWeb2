@@ -1,20 +1,23 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import type { MarkdownHeading } from 'astro';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/footer.astro';
 import Header from '../components/header.astro';
 
-type Props = CollectionEntry<'posts'>['data'] & {
-  headings: MarkdownHeading[];
-};
+const {title, publishDate, description, headings} = Astro.props;
 
-const { title, description, pubDate, updatedDate, headings, tags } = Astro.props;
+const formatDate = (date: Date) => {
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+	return `${year}-${month}-${day}`;
+};
+const formattedDate = formatDate(publishDate);
+
 ---
 
 <html lang="en-au">
   <head>
-    <BaseHead title={title} description={description} date={pubDate} />
+    <BaseHead title={title} date={formattedDate} />
     <style>
       :root {
         --accent: #F97316;
@@ -64,7 +67,7 @@ const { title, description, pubDate, updatedDate, headings, tags } = Astro.props
       }
 
       .page-container {
-        max-width: 700px;
+        max-width: 900px;
         margin: 0 auto;
         padding: 2.5rem 1.25rem 4rem;
         position: relative;
@@ -639,14 +642,14 @@ const { title, description, pubDate, updatedDate, headings, tags } = Astro.props
   </head>
 
   <body>
-    <Header />
+  <Header />
 
     <div class="page-container post-page">
       <main>
         <article>
           <header class="title-section">
             <h1>{title}</h1>
-            {description && <p>{description}</p>}
+             {description && <p>{description}</p>}
             <div class="meta">
               <span class="date-wrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -655,17 +658,8 @@ const { title, description, pubDate, updatedDate, headings, tags } = Astro.props
                   <line x1="8" y1="2" x2="8" y2="6"/>
                   <line x1="3" y1="10" x2="21" y2="10"/>
                 </svg>
-                <span class="date">{pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
-              {updatedDate && (
-                <span class="last-updated-on">· Updated on {updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
-              )}
-              {tags && tags.length > 0 && (
-                <div class="tags">
-                  {tags.map(tag => (
-                    <a href={`/tags/${tag}/`} class="tag">#{tag}</a>
-                  ))}
-                </div>
-              )}
+                <span class="date">{formattedDate}</span>
+              </span>
             </div>
           </header>
 
@@ -675,7 +669,7 @@ const { title, description, pubDate, updatedDate, headings, tags } = Astro.props
         </article>
       </main>
 
-      {headings && headings.length > 0 && (
+        {headings && headings.length > 0 && (
         <aside class="sidebar">
           <div class="toc">
             <div class="toc-title">On This Page</div>
@@ -688,15 +682,14 @@ const { title, description, pubDate, updatedDate, headings, tags } = Astro.props
                 </a>
               ))}
             </nav>
-            </div>
-            <button id="back-to-top" title="Back to top" aria-label="Back to top">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
-              <span>Back to top</span>
-            </button>
+          </div>
+          <button id="back-to-top" title="Back to top" aria-label="Back to top">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+            <span>Back to top</span>
+          </button>
           </div>
         </aside>
       )}
-    </div>
 
     <Footer />
 

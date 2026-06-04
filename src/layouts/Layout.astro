@@ -43,6 +43,9 @@ const ogImageURL = new URL(image, baseURL);
 		<!-- No-index for Development (optional) -->
 		{import.meta.env.DEV && <meta name="robots" content="noindex, nofollow" />}
 
+		<!-- XML sitemap -->
+		<link rel="sitemap" type="application/xml" href="/sitemap.xml" />	
+
 		<!-- Dark mode: inline script runs before first paint to avoid FOUC -->
 		<script is:inline>
 			const isDark =

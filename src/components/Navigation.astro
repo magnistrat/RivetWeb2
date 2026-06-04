@@ -5,15 +5,12 @@ import "../styles/global.css";
 <div id="main-menu" class="nav-links">
   <a href="/">Home</a>
   <a href="/services/">Services</a>
-  <a href="/Insights/">Insights</a>
-  <a href="/Drupal/">Drupal</a>
+  <a href="/Drupal/">Insights</a>
   <a href="/about/">About</a>
   <a href="/contact/">Contact Us</a>
 </div>
 
 <style>
-
-
 .nav-links a {
   display: block;
   text-align: center;
@@ -27,6 +24,12 @@ import "../styles/global.css";
 .nav-links a:hover,
 .nav-links a:focus {
   background-color: var(--color-burnt-orange);
+}
+
+.nav-links a.active,
+.nav-links a[aria-current="page"] {
+  color: var(--color-burnt-orange);
+  border-bottom: 2px solid var(--color-burnt-orange);
 }
 
 @media screen and (min-width: 636px) {

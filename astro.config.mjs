@@ -1,8 +1,10 @@
 // @ts-check
 import { defineConfig , fontProviders } from "astro/config";
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from "@tailwindcss/vite";
 import mdx from '@astrojs/mdx';
 import expressiveCode from 'astro-expressive-code';
+import rehypeWrapTables from './src/plugins/rehype-wrap-tables';
 
 // https://astro.build/config
 export default defineConfig({
@@ -10,7 +12,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [expressiveCode({
+  integrations: [
+	sitemap(),
+	expressiveCode({
 			themes: ['github-light', 'github-dark'],
 			defaultProps: {
 				theme: 'auto',
@@ -39,8 +43,12 @@ export default defineConfig({
 				return false;
 			},
 		}), 
-		mdx(),],
-  markdown: {},
+		mdx(),
+		sitemap(),
+	],
+ markdown: {
+		rehypePlugins: [rehypeWrapTables],
+	},
   fonts: [
         {
             provider: fontProviders.local(),
