@@ -58,7 +58,7 @@ function slugify(text: string) {
 }
 ---
 
-<BlogPost {...post.data} headings={headings}>
+<BlogPost {...post.data} taglist={post.data.articletaglist} headings={headings} >
   <div set:html={bodyWithBookmarks} />
 </BlogPost>
 

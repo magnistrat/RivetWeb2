@@ -6,7 +6,7 @@ import {Image} from 'astro:assets';
 import Roadmap from "../assets/roadmap.png";
 import Compass from "../assets/compass.png";
 import Refinery from "../assets/Refinery.png";
-
+import "../styles/global.css"; 
 ---
 <Layout pageTitle="Our Services">
     
@@ -23,14 +23,14 @@ import Refinery from "../assets/Refinery.png";
         <div> <Image src={Roadmap} alt="Image for Rebound Roadmap service" class="w-full h-48 object-cover rounded-md mb-4"> </div>
         <div>   
             <h2 class="text-2xl font-bold text-rivet-navy mb-3">Tier 1: Risk Refinery</h2>
-            <p class="text-3xl font-bold text-steel-blue mb-4">$900</p>
+            <p class="text-2xl font-bold text-steel-blue mb-4">$900</p>
             <p class="text-slate-600 mb-4">A fast, high-impact starting point to identify your key vulnerabilities.</p>
-            <ul class="list-disc list-inside space-y-2 text-steel-blue mb-6">
+            <ul class="list-disc list-inside text-steel-blue mb-6">
                 <li>2-hour on-site workshop</li>
                 <li>Identify business-critical functions</li>
                 <li>Pinpoint key weather vulnerabilities</li>
-                <li><strong>Deliverable:</strong> A practical Risk Register you can use immediately.</li>
             </ul>
+            <strong>Deliverable:</strong> A practical Risk Register you can use immediately.
         </div> 
         
         <div>
@@ -69,7 +69,9 @@ import Refinery from "../assets/Refinery.png";
 }
 .displaycontainer div {
   padding: 10px;
-  font-size: 30px;
+  font-size: 20px;
   text-align: left;
 }
+
+
 </style>

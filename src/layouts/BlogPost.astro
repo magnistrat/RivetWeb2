@@ -2,8 +2,9 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/footer.astro';
 import Header from '../components/header.astro';
+import  type { Tags } from "../types";
 
-const {title, publishDate, description, headings} = Astro.props;
+const {title, publishDate, description, taglist, headings} = Astro.props;
 
 const formatDate = (date: Date) => {
 	const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -17,7 +18,7 @@ const formattedDate = formatDate(publishDate);
 
 <html lang="en-au">
   <head>
-    <BaseHead title={title} date={formattedDate} />
+    <BaseHead title={title} description={description}, date={formattedDate} />
     <style>
       :root {
         --accent: #F97316;
@@ -649,7 +650,7 @@ const formattedDate = formatDate(publishDate);
         <article>
           <header class="title-section">
             <h1>{title}</h1>
-             {description && <p>{description}</p>}
+             {description && <p style = "font-size: 1.1rem;	line-height: 1.4;">{description}</p>}
             <div class="meta">
               <span class="date-wrapper">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -660,6 +661,9 @@ const formattedDate = formatDate(publishDate);
                 </svg>
                 <span class="date">{formattedDate}</span>
               </span>
+            </div>
+            <div class="my-8 flex items-center justify-center">
+                <div class="h-0.5 w-full max-w-lg bg-gray-200"></div>
             </div>
           </header>
 
@@ -687,6 +691,15 @@ const formattedDate = formatDate(publishDate);
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
             <span>Back to top</span>
           </button>
+          </div>
+          <div class="toc">
+            <div class="toc-title">Tags</div>
+            <nav id="tags-nav">
+              {taglist.map((t: Tags) => (
+              <a href="/Insights/">{t}
+              </a>
+              ))}
+            </nav>
           </div>
         </aside>
       )}

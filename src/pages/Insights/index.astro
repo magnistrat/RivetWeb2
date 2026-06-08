@@ -3,7 +3,7 @@ import "../../styles/global.css";
 import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/footer.astro';
 import Header from '../../components/header.astro';
-import type { DrupalNode } from "../../types";
+import type { DrupalNode, Tags } from "../../types";
 import { getCollection } from 'astro:content';
 
 
@@ -32,42 +32,56 @@ const formatDate = (date: string) => {
 	const day = date.slice(8, 10).padStart(2, '0');
 	return `${month}-${day}`;
 };
+
 ---
-<Layout />
+<Layout pageTitle="Risk Insights">
 <Header />
-<main>
-		<section class="archive-container">
-		{
-			sortedYears.map((year: string) => (
-				<div class="year-section" id={`year-${year}`} key={year}>
-					<h2 class="year-title">
-						{year}
-						<span class="year-count">{groupedPosts[year].length} posts</span>
-					</h2>
-					<ul class="post-list">
-						{
-							groupedPosts[year].map((post: DrupalNode) => (
-								<li class="post-item" >
-									<a href={`.${post.data.alias}`}  class="post-link"> 
-										<span class="post-date">{post.data.publishDate.toString().slice(4,10)}</span>
-										<h3 class="post-title">{post.data.title}</h3>
-										<p>Block</p>								
-									</a>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			))
-		}
-	</section>
-</main>
+ <!-- Page: Risk Insights -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-extrabold text-rivet-navy mb-4">Articles on Risk</h1>
+        <p class="text-xl text-steel-blue max-w-3xl mx-auto">Rivet Risk hears from many small businesses like just like yours. Learn how they are making their future safer.</p>
+    </div>
+	<main>
+			<section class="archive-container">
+			{
+				sortedYears.map((year: string) => (
+					<div class="year-section" id={`year-${year}`} key={year}>
+						<h2 class="year-title">
+							{year}
+							<span class="year-count">{groupedPosts[year].length} posts</span>
+						</h2>
+						<ul class="post-list">
+							{
+								groupedPosts[year].map((post: DrupalNode) => (
+									<li class="post-item" >
+										<a href={`.${post.data.alias}`}  class="post-link"> 
+											<span class="post-date">{post.data.publishDate.toString().slice(4,10)}</span>
+											<h3 class="post-title">{post.data.title}</h3>
+											{post.data.articletaglist && post.data.articletaglist.length > 0 && (
+												<div class="post-tags">
+													{post.data.articletaglist.slice(0, 3).map((onetag: any) => (<span class="post-tag">#{onetag}</span>
+													))}
+													{post.data.articletaglist.length > 3 && (
+															<span class="post-tag">...{post.data.articletaglist.length - 3}</span>
+														)}
+												</div>
+											)}
+										</a>
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				))
+			}
+		</section>
+	</main>
 <Footer />
 </Layout>
 
 <style>
 	main {
-		max-width: 720px;
+		max-width: 80%;
 		margin: 0 auto;
 		padding: 2rem 1.25rem 4rem;
 	}

@@ -3,23 +3,29 @@
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
 import Header from "../components/header.astro";
-import Button from "../components/starwind/button/Button.astro";
+import Button from "../components/starwind/button";
+
 const pageTitle = "Contact Us";
-// Use an environment variable for your Drupal endpoint
-const drupalApiUrl = import.meta.env.DRUPAL_WEBFORM_ENDPOINT; 
+
+import { Resend } from 'resend';
+const baseKey:string = import.meta.env.RESEND_API_KEY;
+
+const resend = new Resend(baseKey);
+
+const { data, error } = await resend.emails.send({
+  from: 'Acme <onboarding@resend.dev>',
+  to: ['delivered@resend.dev'],
+  subject: 'Hello from Resend!',
+  html: '<p>Your message here</p>',
+});
+
 ---
-<Layout pageTitle="Contact Us">
+<Layout pageTitle>
   <Header />
-<main style="max-width: 600px; margin: 0 auto; padding: 2rem;">
+  <main style="max-width: 600px; margin: 0 auto; padding: 2rem;">
       <h1>Contact Us</h1>
-      <p>We'd love to hear from you. Fill out the form below and we'll get back to you shortly.</p>
-
-      <form id="contact-form">
-        <div class="visually-hidden" aria-hidden="true">
-          <label for="url">Leave this field blank</label>
-          <input type="text" id="url" name="url" tabindex="-1" autocomplete="off" />
-        </div>
-
+            <p>We'd love to hear about the risks that keep you awake at night. Fill out the form below and we'll get back to you shortly.</p>
+    <form id="send-form" class="form">
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" required />
@@ -31,82 +37,29 @@ const drupalApiUrl = import.meta.env.DRUPAL_WEBFORM_ENDPOINT;
         </div>
 
         <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" required />
+        </div>
+
+        <div class="form-group">
           <label for="message">Message</label>
           <textarea id="message" name="message" rows="5" required></textarea>
         </div>
 
-        <button type="submit" id="submit-btn" style="padding: 0.75rem 1.5rem; background: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer;">
-          Send Message
-        </button>
-
-        <div id="form-status" class="status-message"></div>
-      </form>
-    </main>
+        <Button id="submit-btn" type="submit">Send</button>
+    </form>
+  <div id="result" class="result" style="display: none;"></div>
+  </main>
   <Footer /> 
 </Layout> 
 
-
-<script define:vars={{ drupalApiUrl }}>
-    document.getElementById('contact-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const form = e.target;
-    const submitBtn = document.getElementById('submit-btn');
-    const statusDiv = document.getElementById('form-status');
-    const formData = new FormData(form);
-
-    // Client-side Honeypot Check
-    if (formData.get('url') !== '') {
-        statusDiv.textContent = "Submission rejected.";
-        statusDiv.className = "status-message error";
-        return;
-    }
-
-    // Prepare payload for Drupal Webform REST
-    const payload = {
-        webform_id: 'contact',
-        name: formData.get('name'),
-        email: formData.get('email'),
-        message: formData.get('message')
-    };
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Sending...";
-
-    try {
-        const response = await fetch(drupalApiUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload),
-        });
-
-        if (response.ok) {
-        statusDiv.textContent = "Thank you! Your message has been sent securely.";
-        statusDiv.className = "status-message success";
-        form.reset();
-        } else {
-        throw new Error('Server rejected submission');
-        }
-    } catch (error) {
-        statusDiv.textContent = "Sorry, there was an issue sending your message. Please try again later.";
-        statusDiv.className = "status-message error";
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Send Message";
-    }
-    });
-</script>
-
 <style>
-    .form-group { margin-bottom: 1rem; }
-    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold;}
-    .form-group input, .form-group textarea { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
-    /* The honeypot field is hidden from real users but visible to screen-reading bots */
-    .visually-hidden { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
-    .status-message { margin-top: 1rem; padding: 1rem; border-radius: 4px; display: none; }
-    .success { background: #d4edda; color: #155724; display: block; }
-    .error { background: #f8d7da; color: #721c24; display: block; }
+  .form-group { margin-bottom: 1rem; }
+  .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold;}
+  .form-group input, .form-group textarea { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
+  /* The honeypot field is hidden from real users but visible to screen-reading bots */
+  .visually-hidden { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+  .status-message { margin-top: 1rem; padding: 1rem; border-radius: 4px; display: block; }
+  .status-message.error { background: #f8d7da; color: #721c24; }
+  .success-msg { background: #d4edda; color: #155724; display: block; margin-top: 1rem; padding: 1rem; border-radius: 4px; }
 </style>

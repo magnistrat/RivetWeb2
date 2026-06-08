@@ -5,50 +5,56 @@ import tailwindcss from "@tailwindcss/vite";
 import mdx from '@astrojs/mdx';
 import expressiveCode from 'astro-expressive-code';
 import rehypeWrapTables from './src/plugins/rehype-wrap-tables';
+import react from '@astrojs/react';
+
+
+
+import node from '@astrojs/node';
+
+
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://rivetrisk.com.au",
+
   vite: {
     plugins: [tailwindcss()],
   },
-  integrations: [
-	sitemap(),
-	expressiveCode({
-			themes: ['github-light', 'github-dark'],
-			defaultProps: {
-				theme: 'auto',
-				wrap: true,
-				showLineNumbers: true,
-			},
-			styleOverrides: {
-				codeFontSize: '0.875rem',
-				codeFontFamily: "'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
-				codeLineHeight: '1.7142857em',
-				borderRadius: '0.5rem',
-				frameBorderWidth: '1px',
-				frameShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-				containerPaddingBlock: '0.75rem',
-				containerPaddingInline: '1rem',
-				lineNumberMarginInline: '1rem',
-				lineNumberWidth: '2rem',
-			},
-			frames: {
-				showCopyButton: true,
-				showLanguageBadge: true,
-			},
-			useDarkModeMediaQuery: false,
-			themeCssSelector: (theme) => {
-				if (theme.name === 'github-dark') return '.dark';
-				return false;
-			},
-		}), 
-		mdx(),
-		sitemap(),
-	],
- markdown: {
-		rehypePlugins: [rehypeWrapTables],
-	},
+
+  integrations: [sitemap(), expressiveCode({
+          themes: ['github-light', 'github-dark'],
+          defaultProps: {
+              theme: 'auto',
+              wrap: true,
+              showLineNumbers: true,
+          },
+          styleOverrides: {
+              codeFontSize: '0.875rem',
+              codeFontFamily: "'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+              codeLineHeight: '1.7142857em',
+              borderRadius: '0.5rem',
+              frameBorderWidth: '1px',
+              frameShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+              containerPaddingBlock: '0.75rem',
+              containerPaddingInline: '1rem',
+              lineNumberMarginInline: '1rem',
+              lineNumberWidth: '2rem',
+          },
+          frames: {
+              showCopyButton: true,
+              showLanguageBadge: true,
+          },
+          useDarkModeMediaQuery: false,
+          themeCssSelector: (theme) => {
+              if (theme.name === 'github-dark') return '.dark';
+              return false;
+          },
+      }), mdx(), sitemap(), react()],
+
+  markdown: {
+         rehypePlugins: [rehypeWrapTables],
+     },
+
   fonts: [
         {
             provider: fontProviders.local(),
@@ -63,4 +69,8 @@ export default defineConfig({
             },
         },
     ],
+
+    adapter: node({
+    mode: 'standalone',
+  }),
 });

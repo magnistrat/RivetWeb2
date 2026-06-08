@@ -3,12 +3,18 @@ export interface Path {
     pid: number
     langcode: string
 }
+export interface Tags {
+    id : string
+    name : string
+    target_id : Number
+}
 
 export interface DrupalNode extends Record<string, any> {
     id: string
     type: string
     langcode: string
     field_slug: string
+    summary: string
     slug: string
     status: boolean
     drupal_internal__nid: number
@@ -23,6 +29,6 @@ export interface DrupalNode extends Record<string, any> {
     default_langcode: boolean
     sticky: boolean
     path: Path
-   
-    field_tags?: string[]
+    field_tags?: Tags[]
 }   
+

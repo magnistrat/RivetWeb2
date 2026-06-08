@@ -4,26 +4,28 @@
 import LogoLight from '../assets/rivet_logo_landscape_light.svg';
 import LogoDark from '../assets/rivet_logo_landscape_dark.svg'; 
 
-
-const MENU_HEIGHT = 100;
+const { height } = Astro.props;
+const cssHeight = height ? `${height}px` : `clamp(36px, 4vw, 100px)`;
 ---
-<div class="logo">
-<a href="/" aria-label="Rivet Risk Services Home">
-  <LogoDark  height={MENU_HEIGHT} class="logo logo-dark" />
-  <LogoLight height={MENU_HEIGHT} class="logo logo-light" /> 
- </a>
-  </div>
+
+<div class="logo-wrapper" style={`--logo-height: ${cssHeight}`}>
+  <LogoDark height={height} class="logo-svg logo-dark" />
+  <LogoLight height={height} class="logo-svg logo-light" /> 
+</div>
 
   <style>
-  .logo {
-    padding: 1rem 2rem;
-    display: flex;
-    align-items: left;
+
+/* Keep wrapper auto-width so the logo scales proportionally with the defined height */
+  .logo-wrapper {
+   width: auto; 
+   display: inline-flex;
+   align-items: center;
   }
 
-  /* Force auto-width so the logo scales proportionally with the defined height */
-  .logo {
+  .logo-svg {
     width: auto;
+    height: var(--logo-height);
+    display: block;
   }
 
   /* Hide the dark logo by default */

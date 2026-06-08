@@ -1,6 +1,6 @@
 import {Jsona} from "jsona";
 import {DrupalJsonApiParams} from "drupal-jsonapi-params";
-import type {DrupalNode} from "../types.ts";
+import type {DrupalNode, DrupalTag} from "../types.ts";
 import type {TJsonApiBody} from "jsona/lib/JsonaTypes";
 
 
@@ -40,10 +40,26 @@ export const getArticles = async (): Promise<DrupalNode[]> => {
             "field_slug",
             "field_tags",
             "field_category",
+            "field_seo_description",
             "uid",
             "field_image",
          ])
         .addFilter("status", "1");
     const path: string = params.getQueryString();   
     return await fetchUrl(baseUrl + '/jsonapi/node/risk_article?' + path);   ;
+}
+
+/**
+ * Get all tags.
+ *
+ * @return Promise<DrupalNode[]>
+ */
+export const getTags = async (): Promise<DrupalTag[]> => {
+    const params: DrupalJsonApiParams = new DrupalJsonApiParams();
+
+    // Request only the `name` field for the `tags` vocabulary
+    params.addFields("taxonomy_term--tags", ["name"]);
+
+    const path: string = params.getQueryString();
+    return await fetchUrl(baseUrl + '/jsonapi/taxonomy_term/tags?' + path);
 }
