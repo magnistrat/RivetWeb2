@@ -1,6 +1,6 @@
 import {Jsona} from "jsona";
 import {DrupalJsonApiParams} from "drupal-jsonapi-params";
-import type {DrupalNode, DrupalTag} from "../types.ts";
+import type {DrupalNode, Tags} from "../types.ts";
 import type {TJsonApiBody} from "jsona/lib/JsonaTypes";
 
 
@@ -54,7 +54,7 @@ export const getArticles = async (): Promise<DrupalNode[]> => {
  *
  * @return Promise<DrupalNode[]>
  */
-export const getTags = async (): Promise<DrupalTag[]> => {
+export const getTags = async (): Promise<Tags[]> => {
     const params: DrupalJsonApiParams = new DrupalJsonApiParams();
 
     // Request only the `name` field for the `tags` vocabulary

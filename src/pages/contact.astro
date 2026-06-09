@@ -1,23 +1,37 @@
 ---
-// src/pages/contact.astro
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
 import Header from "../components/header.astro";
 import Button from "../components/starwind/button";
+import { Resend } from 'resend';
+export const prerender = false; // Not needed in 'server' mode
 
 const pageTitle = "Contact Us";
 
-import { Resend } from 'resend';
 const baseKey:string = import.meta.env.RESEND_API_KEY;
-
 const resend = new Resend(baseKey);
 
-const { data, error } = await resend.emails.send({
-  from: 'Acme <onboarding@resend.dev>',
-  to: ['delivered@resend.dev'],
-  subject: 'Hello from Resend!',
-  html: '<p>Your message here</p>',
-});
+if (Astro.request.method === "POST") {
+  try {
+    const frmdata = await Astro.request.formData();
+    const name = frmdata.get("name"); 
+    const email = frmdata.get("email"); 
+    const f_subject = frmdata.get("subject"); 
+    const message = frmdata.get("message"); 
+    
+    const {data, error } = await resend.emails.send({
+      from: 'Rivet <website@rivetrisk.com.au>',
+      to: ['cchinner@rivetrisk.com.au'],
+      subject: f_subject,
+      html: "<h2>From: " + name + "</h2> <em>email: " + email +"</em><hr><p>" + message + "</p>",
+    });
+    return Astro.redirect("/");
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error: - ", error.message);
+    }
+  }
+}      
 
 ---
 <Layout pageTitle>
@@ -25,7 +39,7 @@ const { data, error } = await resend.emails.send({
   <main style="max-width: 600px; margin: 0 auto; padding: 2rem;">
       <h1>Contact Us</h1>
             <p>We'd love to hear about the risks that keep you awake at night. Fill out the form below and we'll get back to you shortly.</p>
-    <form id="send-form" class="form">
+    <form id="send-form" class="form" method="POST">
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" required />
@@ -63,3 +77,6 @@ const { data, error } = await resend.emails.send({
   .status-message.error { background: #f8d7da; color: #721c24; }
   .success-msg { background: #d4edda; color: #155724; display: block; margin-top: 1rem; padding: 1rem; border-radius: 4px; }
 </style>
+
+
+

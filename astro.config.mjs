@@ -2,9 +2,7 @@
 import { defineConfig , fontProviders } from "astro/config";
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from "@tailwindcss/vite";
-import mdx from '@astrojs/mdx';
 import expressiveCode from 'astro-expressive-code';
-import rehypeWrapTables from './src/plugins/rehype-wrap-tables';
 import react from '@astrojs/react';
 
 
@@ -49,13 +47,9 @@ export default defineConfig({
               if (theme.name === 'github-dark') return '.dark';
               return false;
           },
-      }), mdx(), sitemap(), react()],
+      }),  sitemap(), react()],
 
-  markdown: {
-         rehypePlugins: [rehypeWrapTables],
-     },
-
-  fonts: [
+   fonts: [
         {
             provider: fontProviders.local(),
             name: 'Atkinson',
@@ -69,7 +63,6 @@ export default defineConfig({
             },
         },
     ],
-
     adapter: node({
     mode: 'standalone',
   }),

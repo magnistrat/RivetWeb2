@@ -40,8 +40,6 @@ const ogImageURL = new URL(image, baseURL);
 		<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 		<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
 
-		<!-- No-index for Development (optional) -->
-		{import.meta.env.DEV && <meta name="robots" content="noindex, nofollow" />}
 
 		<!-- XML sitemap -->
 		<link rel="sitemap" type="application/xml" href="/sitemap.xml" />	
@@ -55,15 +53,6 @@ const ogImageURL = new URL(image, baseURL);
 				document.documentElement.classList.add("dark");
 			}
 		</script>
-	<!-- MailerLite Universal -->
-	<script>
-		(function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-		.push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-		n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-		(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-		ml('account', '1217112');
-	</script>
-	<!-- End MailerLite Universal -->	
 	</head>
 	<body class="bg-background text-foreground">
 		<main>
@@ -78,6 +67,7 @@ const ogImageURL = new URL(image, baseURL);
 		margin: 0;
 		width: 100%;
 		height: 100%;
+		background-image: linear-gradient(to bottom,var(--rivet-navy), var(--steel-blue));
 	}
 
 	:global(html) {

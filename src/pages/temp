@@ -49,3 +49,48 @@ if (isInputError(error)) {
   }
  }
 </script>
+
+
+
+<script>
+  const form = document.getElementById('send-form');
+  const btn = document.getElementById('submit-btn');
+  const resultDiv = document.getElementById('result');
+  
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    resultDiv.style.display = 'none';
+
+    const to = (document.getElementById('to')).value;
+    const subject = (document.getElementById('subject')).value;
+    const message = (document.getElementById('message')).value;
+
+    try {
+      const response = await fetch('/api/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to, subject, message }),
+      });
+
+      const data = await response.json();
+      resultDiv.style.display = 'block';
+
+      if (!response.ok) {
+        resultDiv.className = 'result error';
+        resultDiv.textContent = data.error || 'Failed to send email';
+      } else {
+        resultDiv.className = 'result success';
+        resultDiv.innerHTML = '<strong>Email sent successfully!</strong><br/>ID:'' ${data.id};
+      }
+    } catch {
+      resultDiv.style.display = 'block';
+      resultDiv.className = 'result error';
+      resultDiv.textContent = 'Network error. Please try again.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Send Email';
+    }
+  });
+</script>

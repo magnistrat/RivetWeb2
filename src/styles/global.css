@@ -73,6 +73,10 @@
 }
 
 :root {
+  --rivet-navy: #0A2342;
+  --steel-blue: #2F5C8A;
+  --rivet-orange: #F2952F;
+  --bright-copper: #C76B29;
   --color-navy: #0A2342;
   --color-blue: #2F5C8A;
   --color-orange: #F2952F;
@@ -179,8 +183,8 @@ body {
 }
 
 main {
-	width: 1500px;
-	max-width: calc(100% - 2rem);
+	width: 100%;
+	max-width: calc(100% - 1rem);
 	margin: 0 auto;
 	padding: 2.5rem 1rem 4rem;
 }
