@@ -1,33 +1,54 @@
 ---
 import { hero } from "../content/content";
 import Button from "./starwind/button/Button.astro";
+import "tailwindcss";
 ---
+<section id="hero" class="hero-section relative overflow-hidden py-12 sm:py-16 md:py-20 lg:py-24 ">
+<div class="rounded-xl mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10" >
+	<div class="content grid gap-12 lg:gap-16 lg:grid-cols-2 items-center">
+		<!-- Content -->
+			<div class="flex flex-col gap-6 sm:gap-8 " >
+			<!-- Headline -->
+			<h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-amber-500 ">
+				{hero.headline}
+			</h1>
+			<!-- Subheadline -->
+			<p class="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-xl text-stone-200">
+				{hero.subheadline}
+			</p>
 
-<section id="hero" class="relative overflow-hidden py-12 sm:py-16 md:py-20 lg:py-24">
-	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" >
-		<div class="grid gap-12 lg:gap-16 lg:grid-cols-2 items-center ">
-			<!-- Content -->
-			<div class="flex flex-col gap-6 sm:gap-8">
-				<!-- Headline -->
-				<h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-foreground">
-					{hero.headline}
-				</h1>
-
-				<!-- Subheadline -->
-				<p class="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-xl">
-					{hero.subheadline}
-				</p>
-
-				<!-- CTA Buttons -->
-				<div class="flex flex-col sm:flex-row gap-4 pt-2">
-					<Button variant="primary" size="lg" href={hero.primaryCta.href}>
-						{hero.primaryCta.label}
-					</Button>
-					<Button variant="ghost" size="lg" href={hero.secondaryCta.href}>
-						{hero.secondaryCta.label}
-					</Button>
-				</div>
+			<!-- CTA Buttons -->
+			<div class="flex flex-col sm:flex-row gap-10 pt-2">
+				<Button variant="primary" size="lg" href={hero.primaryCta.href } >
+					{hero.primaryCta.label}
+				</Button>
+				<Button variant="secondary" size="lg" href={hero.secondaryCta.href}>
+					{hero.secondaryCta.label}
+				</Button>
 			</div>
 		</div>
 	</div>
+	</div>
 </section>
+	
+
+<style>
+.hero-section {
+	position: relative;
+ 	 background-image:
+    	url("/src/assets/HeroBack.png");
+	background-size: cover;
+  	background-position: left;
+  	color: rgb(37, 37, 37);
+}	
+.hero-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+.content {
+  /* ... */
+  position: relative;
+  z-index: 1;
+}

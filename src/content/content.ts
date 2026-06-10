@@ -10,14 +10,14 @@ export const siteConfig = {
     "Rivet Risk Services provides comprehensive risk management and business continuity services tailored for your small business.",
   image: "/og-image.png",
   quickLinks: [
-    { label: "Services", href: "#features" },
-    { label: "Insights", href: "#how-it-works" },
+    { label: "Services", href: "/services" },
+    { label: "Insights", href: "/Insights" },
     { label: "FAQ", href: "#faq" }
   ],
   legalLinks: [
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
-    { label: "Contact", href: "mailto:admin@rivetrisk.com.au" }
+    { label: "Contact", href: "/contact" }
   ]
 };
 
@@ -34,7 +34,7 @@ export const hero = {
   headline:
     "Stop Guessing, Turn Business Anxiety into a Confident Action Plan",
   subheadline:
-    "Practical, affordable natural disaster risk management for small businesses across South East Queensland. We help you prepare for storms, floods, and bushfires—before they hit.",
+    "Practical, affordable natural disaster risk management for small businesses across South East Queensland. We help you prepare for unexpected events, before they hit.",
   primaryCta: {
     label: "Free Disaster Protection Pack",
     href: "#cta"

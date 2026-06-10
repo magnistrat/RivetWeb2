@@ -4,11 +4,9 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from "@tailwindcss/vite";
 import expressiveCode from 'astro-expressive-code';
 import react from '@astrojs/react';
-
-
+ import icon from "astro-icon";
 
 import node from '@astrojs/node';
-
 
 
 // https://astro.build/config
@@ -19,7 +17,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
 
-  integrations: [sitemap(), expressiveCode({
+  integrations: [sitemap(), icon(), expressiveCode({
           themes: ['github-light', 'github-dark'],
           defaultProps: {
               theme: 'auto',
@@ -47,7 +45,7 @@ export default defineConfig({
               if (theme.name === 'github-dark') return '.dark';
               return false;
           },
-      }),  sitemap(), react()],
+      }), sitemap(), react(), icon()],
 
    fonts: [
         {

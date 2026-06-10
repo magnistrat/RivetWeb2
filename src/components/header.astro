@@ -1,7 +1,6 @@
 ---
 import Navigation from "./Navigation.astro";
 import Logo from "./Logo.astro";
-import "../styles/global.css";
 
 const isDark = 'dark';
 ---
@@ -30,21 +29,25 @@ const isDark = 'dark';
 	})();
 </script>
 
-<header class={`sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur supports-backdrop-filter:bg-background/60 `} >
-	<div class="mx-auto px-4 sm:px-6 lg:px-8">
-		<div class="flex h-16 items-center justify-start md:h-20">
+<header class={`sticky top-0 w-full bg-gray-50`} >
+	<div class="px-4 sm:px-6 lg:px-8 border-b-2 border-indigo-900">
+		<div class="flex h-16 items-center md:h-20">
 			<!-- Logo -->
-			<a href="/" class="flex items-center gap-2 font-bold text-lg md:text-xl">
-				<Logo height={40} />
-			</a>
+			<div>
+				<a href="/" class="flex-none w-15">
+					<Logo height={45} />
+				</a>
+			</div>
 			<!-- Navigation Links -->
-      		<nav class="hidden md:flex items-center gap-10 ml-10">
-        	<Navigation />
-      		</nav>
-	  		<!-- Theme buttons -->
-			<div class="nav-right">
+			 <div>
+				<nav class="hidden md:flex items-center gap-10 ">
+				<Navigation />
+				</nav>
+			  </div>	
+			<!-- Theme buttons -->
+			<div class="nav-right pl-20">
 				<button id="theme-toggle" class="nav-btn" title="Toggle theme" aria-label="Toggle theme">
-					<svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<circle cx="12" cy="12" r="5"/>
 						<line x1="12" y1="1" x2="12" y2="3"/>
 						<line x1="12" y1="21" x2="12" y2="23"/>
@@ -82,7 +85,7 @@ const isDark = 'dark';
 						</svg>
 					</div>
 				</div>
-		</div>
+			</div>
 		<!-- Mobile Menu Button -->
 			<button
 				id="mobile-menu-btn"
@@ -107,7 +110,7 @@ const isDark = 'dark';
 				</svg>
 			</button>
 		</div>
-	</div>
+
 </header>
 
 
@@ -258,9 +261,8 @@ const isDark = 'dark';
 		top: 0;
 		z-index: 100;
 		width: 100%;
-		border-bottom: 1px solid var(--border-color);
+		border-bottom: 5px solid var(--burnt-orange);
 		backdrop-filter: blur(8px);
-		background-color: rgba(255, 255, 255, 0.95);
 	}
 	
 	html.dark header {
@@ -314,7 +316,7 @@ const isDark = 'dark';
 		border: none;
 		background: none;
 		border-radius: 0.5rem;
-		color: var(--text-muted);
+		color: var(--color-neutral-950);
 		cursor: pointer;
 		transition: all 0.2s ease;
 	}

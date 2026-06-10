@@ -1,0 +1,101 @@
+<div class="legal-container">
+<slot />
+</div>
+
+<style>
+/* Container for Legal Pages */
+.legal-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #2b2b2b;
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* Document Title */
+.legal-container h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Last Updated Metadata */
+.legal-container .last-updated {
+  font-size: 0.9rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 50px;
+  font-style: italic;
+}
+
+/* Section Headings (e.g., 1. Definitions) */
+.legal-container h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-top: 40px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+
+/* Sub-headings (e.g., 1.1 User Accounts) */
+.legal-container h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+/* Body Paragraphs */
+.legal-container p {
+  margin-bottom: 20px;
+}
+
+/* Blockquotes (for summaries or notable exceptions) */
+.legal-container blockquote {
+  border-left: 4px solid #0056b3;
+  background-color: #f8f9fa;
+  padding: 15px 20px;
+  margin: 20px 0;
+  color: #555;
+}
+
+/* Highlighted or Important Text (e.g., Limitation of Liability) */
+.legal-container .highlight-terms {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  color: #d9381e;
+}
+
+/* Interactive Links */
+.legal-container a {
+  color: #0056b3;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.legal-container a:hover {
+  color: #003d82;
+  text-decoration: none;
+}
+
+/* Bullet lists */
+.legal-container .ul {
+   list-style-type: circle; 
+   list-style-position: inside; 
+}
+
+.legal-container .li::marker {
+  color: blueviolet;
+  font-size: 1.5em;
+}
+</style>
+
+
