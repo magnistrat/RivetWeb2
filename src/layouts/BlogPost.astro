@@ -6,19 +6,11 @@ import  type { Tags } from "../types";
 
 const {title, publishDate, description, taglist, headings} = Astro.props;
 
-const formatDate = (date: Date) => {
-	const month = String(date.getMonth() + 1).padStart(2, '0');
-	const day = String(date.getDate()).padStart(2, '0');
-    const year = date.getFullYear();
-	return `${year}-${month}-${day}`;
-};
-const formattedDate = formatDate(publishDate);
-
 ---
 
 <html lang="en-au">
   <head>
-    <BaseHead title={title} description={description}, date={formattedDate} />
+    <BaseHead title={title} description={description}, date={publishDate} />
     <style>
       :root {
         --accent: #F97316;
@@ -659,7 +651,7 @@ const formattedDate = formatDate(publishDate);
                   <line x1="8" y1="2" x2="8" y2="6"/>
                   <line x1="3" y1="10" x2="21" y2="10"/>
                 </svg>
-                <span class="date">{formattedDate}</span>
+                <span class="date">{publishDate}</span>
               </span>
             </div>
             <div class="my-8 flex items-center justify-center">

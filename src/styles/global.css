@@ -83,7 +83,7 @@
   --color-light: #fff;
   --background: var(--color-white);
   --foreground: var(--color-neutral-950);
-  --bg-primary: var(color-white);
+  --bg-primary: var(--color-white);
   --card: var(--color-white);
   --card-foreground: var(--color-neutral-950);
   --popover: var(--color-white);

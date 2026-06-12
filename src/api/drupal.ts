@@ -46,7 +46,7 @@ export const getArticles = async (): Promise<DrupalNode[]> => {
          ])
         .addFilter("status", "1");
     const path: string = params.getQueryString();   
-    return await fetchUrl(baseUrl + '/jsonapi/node/risk_article?' + path);   ;
+    return await fetchUrl(baseUrl + '/jsonapi/node/risk_article?' + path);   
 }
 
 /**

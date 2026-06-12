@@ -1,6 +1,6 @@
 import { defineCollection } from 'astro:content';
 import { z } from 'astro/zod';
-import type { DrupalNode, DrupalTag } from './types';
+import type { DrupalNode } from './types';
 import { getArticles, getTags } from './api/drupal';
 
 

@@ -4,20 +4,17 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from "@tailwindcss/vite";
 import expressiveCode from 'astro-expressive-code';
 import react from '@astrojs/react';
- import icon from "astro-icon";
-
 import node from '@astrojs/node';
 
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://rivetrisk.com.au",
-
   vite: {
     plugins: [tailwindcss()],
   },
 
-  integrations: [sitemap(), icon(), expressiveCode({
+  integrations: [sitemap(), expressiveCode({
           themes: ['github-light', 'github-dark'],
           defaultProps: {
               theme: 'auto',
@@ -45,7 +42,7 @@ export default defineConfig({
               if (theme.name === 'github-dark') return '.dark';
               return false;
           },
-      }), sitemap(), react(), icon()],
+      }), sitemap(), react()],
 
    fonts: [
         {

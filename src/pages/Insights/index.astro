@@ -4,20 +4,12 @@ import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/footer.astro';
 import Header from '../../components/header.astro';
 import type { DrupalNode, Tags } from "../../types";
-import { getCollection } from 'astro:content';
-
-
-// 1. Access your environment variable safely
-const baseUrl = import.meta.env.DRUPAL_BASE_URL;
+import {getArticles} from "../../api/drupal";
 
 // Get all published articles.
-const allPosts = (await getCollection('drupalPosts')).sort(
-	(a : any, b : any) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
-); 
-
-
-const groupedPosts = allPosts.reduce((acc: any, post: any) => {
-	const year = post.data.publishDate.toString().slice(10, 15);
+const allPosts = await getArticles();
+const groupedPosts = allPosts.reduce((acc: any, post: DrupalNode) => {
+	const year = post.created.toString().slice(0, 4);
 	if (!acc[year]) {
 		acc[year] = [];
 	}
@@ -37,45 +29,45 @@ const formatDate = (date: string) => {
 <Layout pageTitle="Risk Insights">
 <Header />
  <!-- Page: Risk Insights -->
-    <div class="text-center mb-12">
-        <h1 class="text-4xl font-extrabold text-rivet-navy mb-4">Articles on Risk</h1>
-        <p class="text-xl text-steel-blue max-w-3xl mx-auto">Rivet Risk hears from many small businesses like just like yours. Learn how they are making their future safer.</p>
-    </div>
-	<main>
-			<section class="archive-container">
-			{
-				sortedYears.map((year: string) => (
-					<div class="year-section" id={`year-${year}`} key={year}>
-						<h2 class="year-title">
-							{year}
-							<span class="year-count">{groupedPosts[year].length} posts</span>
-						</h2>
-						<ul class="post-list">
-							{
-								groupedPosts[year].map((post: DrupalNode) => (
-									<li class="post-item" >
-										<a href={`.${post.data.alias}`}  class="post-link"> 
-											<span class="post-date">{post.data.publishDate.toString().slice(4,10)}</span>
-											<h3 class="post-title">{post.data.title}</h3>
-											{post.data.articletaglist && post.data.articletaglist.length > 0 && (
-												<div class="post-tags">
-													{post.data.articletaglist.slice(0, 3).map((onetag: any) => (<span class="post-tag">#{onetag}</span>
-													))}
-													{post.data.articletaglist.length > 3 && (
-															<span class="post-tag">...{post.data.articletaglist.length - 3}</span>
-														)}
-												</div>
-											)}
-										</a>
-									</li>
-								))
-							}
-						</ul>
-					</div>
-				))
-			}
-		</section>
-	</main>
+<div class="text-left pl-40">
+	<h1 class="text-4xl font-extrabold text-rivet-navy mb-4">Risk Insights</h1>
+	<p class="text-xl text-steel-blue max-w-3xl">Rivet Risk hears from many small businesses like just like yours. Learn how they are making their future safer.</p>
+</div>
+<main>
+		<section class="archive-container">
+		{
+			sortedYears.map((year: string) => (
+				<div class="year-section" id={`year-${year}`} key={year}>
+					<h2 class="year-title">
+						{year}
+						<span class="year-count">{groupedPosts[year].length} posts</span>
+					</h2>
+					<ul class="post-list">
+						{
+							groupedPosts[year].map((post: DrupalNode) => (
+								<li class="post-item" >
+									<a href={`.${post.path.alias}`}  class="post-link"> 
+										<span class="post-date">{post.created.toString().slice(4,10)}</span>
+										<h3 class="post-title">{post.title}</h3>
+										{post.articletaglist && post.articletaglist.length > 0 && (
+											<div class="post-tags">
+												{post.articletaglist.slice(0, 3).map((onetag: any) => (<span class="post-tag">#{onetag}</span>
+												))}
+												{post.articletaglist.length > 3 && (
+														<span class="post-tag">...{post.articletaglist.length - 3}</span>
+													)}
+											</div>
+										)}
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			))
+		}
+	</section>
+</main>
 <Footer />
 </Layout>
 
@@ -95,7 +87,7 @@ const formatDate = (date: string) => {
 		font-size: 1.25rem;
 		font-weight: 700;
 		margin: 0 0 1rem 0;
-		color: var(--burnt-orange);
+	
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;

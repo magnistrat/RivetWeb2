@@ -26,7 +26,7 @@ export const header = {
   navLinks: siteConfig.quickLinks,
   cta: {
     label: "Free Disaster Protection Pack",
-    href: "#cta"
+    href: "/CTA_fulfillment"
   }
 };
 
@@ -37,11 +37,11 @@ export const hero = {
     "Practical, affordable natural disaster risk management for small businesses across South East Queensland. We help you prepare for unexpected events, before they hit.",
   primaryCta: {
     label: "Free Disaster Protection Pack",
-    href: "#cta"
+    href: "/CTA_fulfillment"
   },
   secondaryCta: {
     label: "Learn More",
-    href: "#features"
+    href: "/services"
   },
   image: {
     src: "/images/hero-illustration.png",

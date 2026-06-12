@@ -1,20 +1,25 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
-import type { DrupalNode } from '../../types';
 import '../../styles/global.css';
+import { baseUrl, fetchUrl, getTags } from '../../api/drupal';
+import type { DrupalNode, Tags } from '../../types';
+import type { string } from 'astro:schema';
+export const prerender = false;
 
-export async function getStaticPaths() {
-  const articles = await getCollection('drupalPosts');
-  return articles.map((post) => ({
-    params: { slug: `${post.data.alias}` },
-    props: post,
-  }));
+const { slug } = Astro.params;
+
+// Fetch the specific article from Drupal using a JSON:API filter
+const drupalUrl = baseUrl + '/jsonapi/node/risk_article';
+const response = await fetchUrl(drupalUrl) as DrupalNode[];
+
+// Handle 404 if the article doesn't exist in Drupal
+if (!response ) {
+  return Astro.redirect('/404');
 }
 
-type Props = CollectionEntry<'drupalPosts'>;
-const post = Astro.props as Props;
-const { headings, bodyWithBookmarks } = getHeadingsAndBookmarkedBody(post.data.body);
+// Extract the article data
+const post = response.find(a => a.path.alias == "/"+slug) as DrupalNode;
+const { headings, bodyWithBookmarks } = getHeadingsAndBookmarkedBody(post.body.value);
 
 function getHeadingsAndBookmarkedBody(body: string) {
   const headingRegex = /<(h[23])\b([^>]*)>([\s\S]*?)<\/\1>/gi;
@@ -56,9 +61,34 @@ function slugify(text: string) {
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '');
 }
+
+function getTagNamesById(
+  tt: Tags[],
+  taglist: Array<{ tagid?: string | number; target_id?: string | number; id?: string | number } | undefined> | undefined,
+): string[] {
+  if (!Array.isArray(tt) || !Array.isArray(taglist)) {
+    return [];
+  }
+
+  const tagIds = new Set(
+    taglist
+      .map((tag) => String(tag?.tagid ?? tag?.target_id ?? tag?.id ?? ''))
+      .filter((id) => id.length > 0),
+  );
+
+  return tt
+    .filter((tag) => tagIds.has(String(tag?.id ?? tag?.target_id ?? tag?.tagid ?? '')))
+    .map((tag) => tag.name)
+    .filter((name): name is string => typeof name === 'string' && name.length > 0);
+}
+
+// Decode the tag list
+const tt = await getTags();
+const tagNames = getTagNamesById(tt, post.field_tags);
+
 ---
 
-<BlogPost {...post.data} taglist={post.data.articletaglist} headings={headings} >
+<BlogPost title={post.title} publishDate={post.created} description={post.summary} taglist={tagNames} headings={headings} >
   <div set:html={bodyWithBookmarks} />
 </BlogPost>
 
