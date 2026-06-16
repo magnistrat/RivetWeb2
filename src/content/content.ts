@@ -50,15 +50,15 @@ export const hero = {
 };
 
 export const problem = {
-  headline: "Are You Building in the Dark?",
+  headline: "Are you using hope as a strategy?",
   description:
-    "Many entrepreneurs spend months or even years building the perfect product, only to discover that nobody wants it. You might be iterating on assumptions instead of validated facts. Without early market validation, you risk wasting time and resources on ideas that won't resonate with your audience."
-};
+    "Many small business owners know that things may go wrong, but they don’t plan for unexpected events. Natural disasters, Economic shifts, supply disruptions, and other emergencies require preparation, not optimism. Hope does not provide concrete actions, financial buffers, or contingency plans when challenges arise. Without proactive risk management, businesses are left vulnerable to preventable losses or even closure. Planning ahead with realistic scenarios, reserves, and backup strategies ensures resilience and keeps your doors open."
+};    
 
 export const solution = {
-  headline: "Validate Your Vision, Faster & Smarter.",
+  headline: "We can help you to plan ahead and be prepared.",
   description:
-    "Astro Validation Landing is your secret weapon for testing product ideas quickly and gathering real market feedback before you invest heavily in development. Our theme makes it simple to create stunning, conversion-optimized landing pages that capture interest, collect emails, and validate market demand. Launched from concept to live in hours, not weeks."
+    "Smart business create contingency plans that address potential risks that their business might face. Simple buffers like  building a financial reserve or speaking to your bank manager to secure access to emergency funding can keep you prepared as conditions evolve. Rivet Risk Services have helped businesses get through the worst so that they can open their doors again. "
 };
 
 export const features = {

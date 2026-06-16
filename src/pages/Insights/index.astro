@@ -5,6 +5,7 @@ import Footer from '../../components/footer.astro';
 import Header from '../../components/header.astro';
 import type { DrupalNode, Tags } from "../../types";
 import {getArticles} from "../../api/drupal";
+export const prerender = false;
 
 // Get all published articles.
 const allPosts = await getArticles();
@@ -31,7 +32,7 @@ const formatDate = (date: string) => {
  <!-- Page: Risk Insights -->
 <div class="text-left pl-40">
 	<h1 class="text-4xl font-extrabold text-rivet-navy mb-4">Risk Insights</h1>
-	<p class="text-xl text-steel-blue max-w-3xl">Rivet Risk hears from many small businesses like just like yours. Learn how they are making their future safer.</p>
+	<p class="text-xl text-steel-blue max-w-3xl">Rivet Risk hears from many small businesses just like yours. Learn how they are making their future safer.</p>
 </div>
 <main>
 		<section class="archive-container">

@@ -9,6 +9,8 @@ import Description from "../components/Description.astro";
 
 <Layout>	
 <Header />
-<Hero />
+    <Hero />
+	<Description headline={problem.headline} description={problem.description} variant="primary" />
+	<Description headline={solution.headline} description={solution.description} variant="secondary" />
 <Footer />
 </Layout>

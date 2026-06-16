@@ -9,7 +9,7 @@ export const prerender = false;
 const { slug } = Astro.params;
 
 // Fetch the specific article from Drupal using a JSON:API filter
-const drupalUrl = baseUrl + '/jsonapi/node/risk_article';
+const drupalUrl = baseUrl + '/jsonapi/node/risk';
 const response = await fetchUrl(drupalUrl) as DrupalNode[];
 
 // Handle 404 if the article doesn't exist in Drupal
