@@ -1,8 +1,7 @@
-import {Jsona} from "jsona";
+import {Jsona, type TJsonApiBody} from "jsona";
 import {DrupalJsonApiParams} from "drupal-jsonapi-params";
 import type {DrupalNode, Tags} from "../types.ts";
-import type {TJsonApiBody} from "jsona/lib/JsonaTypes";
-export const prerender = false;
+
 
 // Get the Drupal Base Url.
 export const baseUrl: string = import.meta.env.DRUPAL_BASE_URL;
@@ -29,24 +28,20 @@ export const fetchUrl = async (url: string): Promise<any> => {
 export const getArticles = async (): Promise<DrupalNode[]> => {
     const params: DrupalJsonApiParams = new DrupalJsonApiParams();
     params
-        .addFields("node--risk_article", [
+        .addFields("node--article", [
             "title",
             "path",
             "body",
-            "summary",
             "created",
-            "status",
+            "alias",
             "slug",
-            "field_slug",
+            "status",
             "field_tags",
-            "field_category",
-            "field_seo_description",
-            "uid",
-            "field_image",
+
          ])
         .addFilter("status", "1");
     const path: string = params.getQueryString();   
-    return await fetchUrl(baseUrl + '/jsonapi/node/risk?' + path);   
+    return await fetchUrl(baseUrl + '/jsonapi/node/risk_article?' + path);   
 }
 
 /**

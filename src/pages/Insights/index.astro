@@ -4,11 +4,11 @@ import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/footer.astro';
 import Header from '../../components/header.astro';
 import type { DrupalNode, Tags } from "../../types";
-import {getArticles} from "../../api/drupal";
-export const prerender = false;
+import {getArticles} from "../../api/drupal.ts";
 
 // Get all published articles.
 const allPosts = await getArticles();
+
 const groupedPosts = allPosts.reduce((acc: any, post: DrupalNode) => {
 	const year = post.created.toString().slice(0, 4);
 	if (!acc[year]) {

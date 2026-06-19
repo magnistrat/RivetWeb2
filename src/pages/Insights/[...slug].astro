@@ -1,30 +1,18 @@
 ---
 import BlogPost from '../../layouts/BlogPost.astro';
 import '../../styles/global.css';
-import { baseUrl, fetchUrl, getTags } from '../../api/drupal';
+import { baseUrl, fetchUrl, getTags } from '../../api/drupal.ts';
 import type { DrupalNode, Tags } from '../../types';
-export const prerender = false;
-
-const { slug } = Astro.params;
+import {getArticles} from "../../api/drupal.ts";
 
 // Fetch the specific article from Drupal using a JSON:API filter
-const drupalUrl = baseUrl + '/jsonapi/node/risk';
-const response = await fetchUrl(drupalUrl) as DrupalNode[];
+const drupalUrl = baseUrl + 'jsonapi/node/risk_article';
 
-// Handle 404 if the article doesn't exist in Drupal
-if (!response ) {
-  return Astro.redirect('/404');
-}
-
-// Extract the article data
-const post = response.find(a => a.path.alias == "/"+slug) as DrupalNode;
-const { headings, bodyWithBookmarks } = getHeadingsAndBookmarkedBody(post.data.body.value);
-
-function getHeadingsAndBookmarkedBody(body: string) {
+   
+export function getHeadingsAndBookmarkedBody(body: string) {
   const headingRegex = /<(h[23])\b([^>]*)>([\s\S]*?)<\/\1>/gi;
   const slugCounts = new Map<string, number>();
   const headings: Array<{ depth: number; text: string; slug: string }> = [];
-
   const html = body.replace(headingRegex, (full, tag, attrText, content) => {
     const text = stripHtml(content).replace(/\s+/g, ' ').trim();
     if (!text) return full;
@@ -47,11 +35,11 @@ function getHeadingsAndBookmarkedBody(body: string) {
   return { headings, bodyWithBookmarks: html };
 }
 
-function stripHtml(html: string) {
+export function stripHtml(html: string) {
   return html.replace(/<[^>]+>/g, '').trim();
 }
 
-function slugify(text: string) {
+export function slugify(text: string) {
   return text
     .toLowerCase()
     .replace(/<[^>]+>/g, '')
@@ -61,7 +49,7 @@ function slugify(text: string) {
     .replace(/^-|-$/g, '');
 }
 
-function getTagNamesById(
+export function getTagNamesById(
   tt: Tags[],
   taglist: Array<{ tagid?: string | number; target_id?: string | number; id?: string | number } | undefined> | undefined,
 ): string[] {
@@ -81,14 +69,42 @@ function getTagNamesById(
     .filter((name): name is string => typeof name === 'string' && name.length > 0);
 }
 
-// Decode the tag list
-const tt = await getTags();
-const tagNames = getTagNamesById(tt, post.field_tags);
 
+export async function getStaticPaths() {
+    const articles = await getArticles();
+    const tt = await getTags();
+
+    return articles.map((article: DrupalNode) => {
+      // Construct the formatted body 
+      const { headings, bodyWithBookmarks } = getHeadingsAndBookmarkedBody(article.body.value);
+      // Decode the tag list
+      const tagNames = getTagNamesById(tt, article.field_tags);
+      return {
+          params: {
+              // Choose `path` to match the `[path]` routing value
+              slug: article.path.alias
+          },
+          props: {
+              title: article.title,
+              Taglist: tagNames,
+              Body: bodyWithBookmarks,
+              Headings: headings,
+              Description: article.summary,
+              created: new Date(article.created).toLocaleDateString('en-AU', {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric"
+              })
+          }
+        }
+      });
+}
+
+const {title, created, Body, Description, Taglist, Headings} = Astro.props;
 ---
 
-<BlogPost title={post.title} publishDate={post.created} description={post.summary} taglist={tagNames} headings={headings} >
-  <div set:html={bodyWithBookmarks} />
+<BlogPost title={title} publishDate={created} description={Description} taglist={Taglist} headings={Headings} >
+  <div set:html={Body} />
 </BlogPost>
 
 
