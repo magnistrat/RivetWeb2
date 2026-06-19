@@ -52,7 +52,7 @@ const formatDate = (date: string) => {
 										<h3 class="post-title">{post.title}</h3>
 										{post.articletaglist && post.articletaglist.length > 0 && (
 											<div class="post-tags">
-												{post.articletaglist.slice(0, 3).map((onetag: any) => (<span class="post-tag">#{onetag}</span>
+												{post.articletaglist.slice(0, 3).map((onetag: Tags) => (<span class="post-tag">#{onetag}</span>
 												))}
 												{post.articletaglist.length > 3 && (
 														<span class="post-tag">...{post.articletaglist.length - 3}</span>

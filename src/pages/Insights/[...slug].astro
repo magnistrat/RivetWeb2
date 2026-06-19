@@ -3,7 +3,6 @@ import BlogPost from '../../layouts/BlogPost.astro';
 import '../../styles/global.css';
 import { baseUrl, fetchUrl, getTags } from '../../api/drupal';
 import type { DrupalNode, Tags } from '../../types';
-import type { string } from 'astro:schema';
 export const prerender = false;
 
 const { slug } = Astro.params;
@@ -19,7 +18,7 @@ if (!response ) {
 
 // Extract the article data
 const post = response.find(a => a.path.alias == "/"+slug) as DrupalNode;
-const { headings, bodyWithBookmarks } = getHeadingsAndBookmarkedBody(post.body.value);
+const { headings, bodyWithBookmarks } = getHeadingsAndBookmarkedBody(post.data.body.value);
 
 function getHeadingsAndBookmarkedBody(body: string) {
   const headingRegex = /<(h[23])\b([^>]*)>([\s\S]*?)<\/\1>/gi;
