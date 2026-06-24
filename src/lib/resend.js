@@ -8,6 +8,7 @@
  */
 
 import { Resend } from 'resend';
+export const prerender = false;
 
 // Validate that the API key is configured
 if (!import.meta.env.RESEND_API_KEY) {
@@ -21,9 +22,3 @@ if (!import.meta.env.RESEND_API_KEY) {
  * Singleton Resend client instance
  */
 export const resend = new Resend(import.meta.env.RESEND_API_KEY);
-
-export const server = {
-  sendEmail: async (formData: FormData) => {
-    // action logic
-  },
-};

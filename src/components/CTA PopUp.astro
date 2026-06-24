@@ -1,0 +1,87 @@
+---
+---
+<!-- Button to trigger the modal -->
+<button id="open-btn" class="open-btn">Download your free toolkit</button>
+
+<!-- The dialog element -->
+<dialog id="popup-dialog" class="popup-dialog">
+    <div class="mx-auto flex max-w-sm  gap-x-4 rounded-xl bg-white p-6 shadow-lg outline outline-black/5 dark:bg-orange-300 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10">
+     <p>SOme text</p> 
+    <button id="close-btn" class="text-gray-500 hover:text-gray-700">X</button>
+  </div>  
+</dialog>
+
+<style>
+  /* Button Styling */
+  .open-btn {
+    padding: 12px 24px;
+    background-color: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .open-btn:hover { background-color: #4338ca; }
+
+  /* Dialog (Backdrop) Styling */
+  .popup-dialog {
+    top:20%;
+    left:35%;
+    border: none;
+    border-radius: 18px;
+    padding: 0;
+    max-width: 500px;
+    width: 100%;
+    background: transparent; /* Allows custom shadow and backdrop styling */
+    backdrop-filter: blur(5px);
+  }
+  
+  .popup-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  /* Modal Container */
+  .modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  }
+
+  /* Close Button */
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #6b7280;
+  }
+  .close-btn:hover { color: #111827; }
+
+</style>
+
+<script>
+  const openBtn = document.getElementById('open-btn');
+  const closeBtn = document.getElementById('close-btn');
+  const dialog = document.getElementById('popup-dialog');
+
+  // Open modal
+  openBtn.addEventListener('click', () => {
+    dialog.showModal();
+  });
+
+  // Close modal with button
+  closeBtn.addEventListener('click', () => {
+    dialog.close();
+  });
+
+  // Close modal when clicking outside the form
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) {
+      dialog.close();
+    }
+  });
+</script>

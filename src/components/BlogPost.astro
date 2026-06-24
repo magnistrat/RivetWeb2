@@ -2,15 +2,225 @@
 import Footer from '../components/footer.astro';
 import Header from '../components/header.astro';
 import  type { Tags } from "../types";
-export const prerender = false;
-
-const {title, publishDate, description, taglist, headings} = Astro.props;
-
+import Image from 'astro/components/Image.astro';
+import Layout from "../layouts/Layout.astro"
+const {title, publishDate, description, taglist, headings, hero_url, hero_alt} = Astro.props;
 ---
+<Layout> 
+<Header />
+  <div class="page-container post-page">
+    <!-- The main article body -->
+    <main>
+      <article>
+        <header class="title-section">
+          <h1>{title}</h1>
+          <div class="meta">
+            <span class="date-wrapper">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <span class="date">{publishDate}</span>
+            </span>
+          </div>
+        </header>
+        <div class="prose">
+            <slot />
+        </div>
+      </article>
+    </main>
 
-<html lang="en-au">
-  <head>
-  
+     <!-- The sidebar -->
+    {headings && headings.length > 0 && (
+    <aside class="sidebar">
+      <div class="toc">
+        <div class="toc-title">On This Page</div>
+        <nav id="toc-nav">
+          {headings.filter(h => h.depth <= 3).map((h) => (
+            <a href={`#${h.slug}`}
+              data-toc-link
+              data-depth={h.depth}>
+              {h.text}
+            </a>
+          ))}
+        </nav>
+      </div>
+      <button id="back-to-top" title="Back to top" aria-label="Back to top">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+        <span>Back to top</span>
+      </button>
+
+      <div class="toc">
+      <!-- And the tag list -->  
+        <div class="toc-title">Tags</div>
+        <nav id="tags-nav">
+          {taglist.map((t: Tags) => (
+          <a href="/Insights/">{t}
+          </a>
+          ))}
+        </nav>
+      </div>
+    </aside>
+    )}
+  </div>  
+<Footer />
+</Layout>
+
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('back-to-top');
+        const tocContainer = document.querySelector('.toc');
+        const tocLinks = document.querySelectorAll('[data-toc-link]');
+        const allHeadings = Array.from(document.querySelectorAll('.prose h1, .prose h2, .prose h3'));
+        let isScrolling = false;
+
+        function highlightHeading(index) {
+          if (index >= 0 && index < tocLinks.length) {
+            tocLinks.forEach((link, i) => {
+              link.classList.toggle('active', i === index);
+            });
+            if (tocContainer && !isScrolling) {
+              const activeLink = tocLinks[index];
+              const linkOffset = activeLink.offsetTop;
+              const containerHeight = tocContainer.offsetHeight;
+              const linkHeight = activeLink.offsetHeight;
+
+              if (linkOffset < tocContainer.scrollTop) {
+                tocContainer.scrollTop = linkOffset - 10;
+              } else if (linkOffset + linkHeight > tocContainer.scrollTop + containerHeight) {
+                tocContainer.scrollTop = linkOffset + linkHeight - containerHeight + 10;
+              }
+            }
+          }
+        }
+
+        function onScroll() {
+          if (window.scrollY > 100) {
+            btn?.classList.add('show');
+          } else {
+            btn?.classList.remove('show');
+          }
+
+          if (isScrolling || allHeadings.length === 0 || tocLinks.length === 0) return;
+
+          const scrollPosition = window.scrollY;
+          const docHeight = document.documentElement.scrollHeight;
+          const winHeight = window.innerHeight;
+          const headerHeight = document.querySelector('header')?.offsetHeight || 80;
+
+          if (scrollPosition <= 50) {
+            highlightHeading(0);
+            return;
+          }
+
+          if (scrollPosition >= docHeight - winHeight - 50) {
+            highlightHeading(tocLinks.length - 1);
+            return;
+          }
+
+          const targetPosition = headerHeight + 150;
+          let currentIndex = 0;
+
+          for (let i = 0; i < allHeadings.length; i++) {
+            const headingTop = allHeadings[i].getBoundingClientRect().top;
+            if (headingTop > targetPosition) {
+              currentIndex = i > 0 ? i - 1 : 0;
+              break;
+            }
+            currentIndex = i;
+          }
+
+          highlightHeading(currentIndex);
+        }
+
+        window.addEventListener('scroll', onScroll);
+        onScroll();
+
+        btn?.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          if (tocContainer) {
+            tocContainer.scrollTop = 0;
+          }
+        });
+
+        tocLinks.forEach((link, index) => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            const target = document.getElementById(targetId);
+            if (target) {
+              const headerHeight = document.querySelector('header')?.offsetHeight || 80;
+              const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+              const currentPosition = window.scrollY;
+              
+              if (Math.abs(targetPosition - currentPosition) < 50) {
+                highlightHeading(index);
+              } else {
+                isScrolling = true;
+                highlightHeading(index);
+                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                setTimeout(() => {
+                  isScrolling = false;
+                  highlightHeading(index);
+                }, 800);
+              }
+            }
+          });
+        });
+
+        if (tocContainer) {
+          tocContainer.addEventListener('wheel', (e) => {
+            e.stopPropagation();
+            
+            const isAtBottom = tocContainer.scrollTop + tocContainer.clientHeight >= tocContainer.scrollHeight - 10;
+            const isAtTop = tocContainer.scrollTop <= 10;
+            
+            if ((isAtBottom && e.deltaY > 0) || (isAtTop && e.deltaY < 0)) {
+              e.preventDefault();
+            }
+          }, { passive: false });
+        }
+
+        const images = document.querySelectorAll('.prose img');
+        const modal = document.getElementById('image-modal');
+        const modalImg = document.getElementById('modal-image');
+        const modalClose = document.getElementById('modal-close');
+
+        images.forEach(img => {
+          img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            modalImg.src = img.src;
+            modalImg.alt = img.alt;
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+          });
+        });
+
+        function closeModal() {
+          modal.classList.remove('show');
+          document.body.style.overflow = '';
+        }
+
+        modal.addEventListener('click', closeModal);
+        modalClose.addEventListener('click', closeModal);
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && modal.classList.contains('show')) {
+            closeModal();
+          }
+        });
+
+        document.addEventListener('ecThemeChange', () => {
+          document.querySelectorAll('.expressive-code').forEach(el => {
+            el.classList.toggle('dark', document.documentElement.classList.contains('dark'));
+          });
+        });
+      });
+    </script>
+ 
+    
     <style>
       :root {
         --accent: #F97316;
@@ -26,7 +236,7 @@ const {title, publishDate, description, taglist, headings} = Astro.props;
         --border-color: #E4E4E7;
         --body-font-size: 17px;
       }
-
+ 
       html.dark {
         --accent: #FB923C;
         --accent-hover: #F97316;
@@ -632,226 +842,4 @@ const {title, publishDate, description, taglist, headings} = Astro.props;
         }
       }
     </style>
-  </head>
-
-
-  <Header />
-
-    <div class="page-container post-page">
-      <main>
-        <article>
-          <header class="title-section">
-            <h1>{title}</h1>
-             {description && <p style = "font-size: 1.1rem;	line-height: 1.4;">{description}</p>}
-            <div class="meta">
-              <span class="date-wrapper">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                  <line x1="16" y1="2" x2="16" y2="6"/>
-                  <line x1="8" y1="2" x2="8" y2="6"/>
-                  <line x1="3" y1="10" x2="21" y2="10"/>
-                </svg>
-                <span class="date">{publishDate}</span>
-              </span>
-            </div>
-            <div class="my-8 flex items-center justify-center">
-                <div class="h-0.5 w-full max-w-lg bg-gray-200"></div>
-            </div>
-          </header>
-
-          <div class="prose">
-            <slot />
-          </div>
-        </article>
-      </main>
-
-        {headings && headings.length > 0 && (
-        <aside class="sidebar">
-          <div class="toc">
-            <div class="toc-title">On This Page</div>
-            <nav id="toc-nav">
-              {headings.filter(h => h.depth <= 3).map((h) => (
-                <a href={`#${h.slug}`}
-                  data-toc-link
-                  data-depth={h.depth}>
-                  {h.text}
-                </a>
-              ))}
-            </nav>
-          </div>
-          <button id="back-to-top" title="Back to top" aria-label="Back to top">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
-            <span>Back to top</span>
-          </button>
-          </div>
-          <div class="toc">
-            <div class="toc-title">Tags</div>
-            <nav id="tags-nav">
-              {taglist.map((t: Tags) => (
-              <a href="/Insights/">{t}
-              </a>
-              ))}
-            </nav>
-          </div>
-        </aside>
-      )}
-
-    <Footer />
-
-    <div class="image-modal" id="image-modal">
-      <span class="close-btn" id="modal-close">&times;</span>
-      <img id="modal-image" src="" alt="" />
-    </div>
-
-    <script is:inline>
-      document.addEventListener('DOMContentLoaded', function() {
-        const btn = document.getElementById('back-to-top');
-        const tocContainer = document.querySelector('.toc');
-        const tocLinks = document.querySelectorAll('[data-toc-link]');
-        const allHeadings = Array.from(document.querySelectorAll('.prose h1, .prose h2, .prose h3'));
-        let isScrolling = false;
-
-        function highlightHeading(index) {
-          if (index >= 0 && index < tocLinks.length) {
-            tocLinks.forEach((link, i) => {
-              link.classList.toggle('active', i === index);
-            });
-            if (tocContainer && !isScrolling) {
-              const activeLink = tocLinks[index];
-              const linkOffset = activeLink.offsetTop;
-              const containerHeight = tocContainer.offsetHeight;
-              const linkHeight = activeLink.offsetHeight;
-
-              if (linkOffset < tocContainer.scrollTop) {
-                tocContainer.scrollTop = linkOffset - 10;
-              } else if (linkOffset + linkHeight > tocContainer.scrollTop + containerHeight) {
-                tocContainer.scrollTop = linkOffset + linkHeight - containerHeight + 10;
-              }
-            }
-          }
-        }
-
-        function onScroll() {
-          if (window.scrollY > 100) {
-            btn?.classList.add('show');
-          } else {
-            btn?.classList.remove('show');
-          }
-
-          if (isScrolling || allHeadings.length === 0 || tocLinks.length === 0) return;
-
-          const scrollPosition = window.scrollY;
-          const docHeight = document.documentElement.scrollHeight;
-          const winHeight = window.innerHeight;
-          const headerHeight = document.querySelector('header')?.offsetHeight || 80;
-
-          if (scrollPosition <= 50) {
-            highlightHeading(0);
-            return;
-          }
-
-          if (scrollPosition >= docHeight - winHeight - 50) {
-            highlightHeading(tocLinks.length - 1);
-            return;
-          }
-
-          const targetPosition = headerHeight + 150;
-          let currentIndex = 0;
-
-          for (let i = 0; i < allHeadings.length; i++) {
-            const headingTop = allHeadings[i].getBoundingClientRect().top;
-            if (headingTop > targetPosition) {
-              currentIndex = i > 0 ? i - 1 : 0;
-              break;
-            }
-            currentIndex = i;
-          }
-
-          highlightHeading(currentIndex);
-        }
-
-        window.addEventListener('scroll', onScroll);
-        onScroll();
-
-        btn?.addEventListener('click', () => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          if (tocContainer) {
-            tocContainer.scrollTop = 0;
-          }
-        });
-
-        tocLinks.forEach((link, index) => {
-          link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = link.getAttribute('href').substring(1);
-            const target = document.getElementById(targetId);
-            if (target) {
-              const headerHeight = document.querySelector('header')?.offsetHeight || 80;
-              const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
-              const currentPosition = window.scrollY;
-              
-              if (Math.abs(targetPosition - currentPosition) < 50) {
-                highlightHeading(index);
-              } else {
-                isScrolling = true;
-                highlightHeading(index);
-                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-                setTimeout(() => {
-                  isScrolling = false;
-                  highlightHeading(index);
-                }, 800);
-              }
-            }
-          });
-        });
-
-        if (tocContainer) {
-          tocContainer.addEventListener('wheel', (e) => {
-            e.stopPropagation();
-            
-            const isAtBottom = tocContainer.scrollTop + tocContainer.clientHeight >= tocContainer.scrollHeight - 10;
-            const isAtTop = tocContainer.scrollTop <= 10;
-            
-            if ((isAtBottom && e.deltaY > 0) || (isAtTop && e.deltaY < 0)) {
-              e.preventDefault();
-            }
-          }, { passive: false });
-        }
-
-        const images = document.querySelectorAll('.prose img');
-        const modal = document.getElementById('image-modal');
-        const modalImg = document.getElementById('modal-image');
-        const modalClose = document.getElementById('modal-close');
-
-        images.forEach(img => {
-          img.addEventListener('click', (e) => {
-            e.stopPropagation();
-            modalImg.src = img.src;
-            modalImg.alt = img.alt;
-            modal.classList.add('show');
-            document.body.style.overflow = 'hidden';
-          });
-        });
-
-        function closeModal() {
-          modal.classList.remove('show');
-          document.body.style.overflow = '';
-        }
-
-        modal.addEventListener('click', closeModal);
-        modalClose.addEventListener('click', closeModal);
-
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && modal.classList.contains('show')) {
-            closeModal();
-          }
-        });
-
-        document.addEventListener('ecThemeChange', () => {
-          document.querySelectorAll('.expressive-code').forEach(el => {
-            el.classList.toggle('dark', document.documentElement.classList.contains('dark'));
-          });
-        });
-      });
-    </script>
- 
+  

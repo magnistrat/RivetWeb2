@@ -12,7 +12,7 @@ export const siteConfig = {
   quickLinks: [
     { label: "Services", href: "/services" },
     { label: "Insights", href: "/Insights" },
-    { label: "FAQ", href: "#faq" }
+    { label: "XXX", href: "#faq" }
   ],
   legalLinks: [
     { label: "Privacy Policy", href: "/privacy" },
@@ -23,7 +23,7 @@ export const siteConfig = {
 
 export const header = {
   name: siteConfig.name,
-  navLinks: siteConfig.quickLinks,
+  TxnavLinks: siteConfig.quickLinks,
   cta: {
     label: "Free Disaster Protection Pack",
     href: "/CTA_fulfillment"
@@ -40,8 +40,8 @@ export const hero = {
     href: "/CTA_fulfillment"
   },
   secondaryCta: {
-    label: "Learn More",
-    href: "/services"
+    label: "How we can help you",
+    href: "/What we do"
   },
   image: {
     src: "/images/hero-illustration.png",

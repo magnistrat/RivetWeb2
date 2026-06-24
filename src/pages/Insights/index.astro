@@ -8,7 +8,6 @@ import {getArticles} from "../../api/drupal.ts";
 
 // Get all published articles.
 const allPosts = await getArticles();
-
 const groupedPosts = allPosts.reduce((acc: any, post: DrupalNode) => {
 	const year = post.created.toString().slice(0, 4);
 	if (!acc[year]) {
@@ -50,6 +49,7 @@ const formatDate = (date: string) => {
 									<a href={`.${post.path.alias}`}  class="post-link"> 
 										<span class="post-date">{post.created.toString().slice(4,10)}</span>
 										<h3 class="post-title">{post.title}</h3>
+										<p>[{post.field_image?.altText}]</p>
 										{post.articletaglist && post.articletaglist.length > 0 && (
 											<div class="post-tags">
 												{post.articletaglist.slice(0, 3).map((onetag: Tags) => (<span class="post-tag">#{onetag}</span>

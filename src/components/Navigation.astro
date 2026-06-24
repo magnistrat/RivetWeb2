@@ -1,82 +1,31 @@
 ---
-import "../styles/global.css"; 
+import "../styles/global.css";
+
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/services/", label: "Services" },
+  { href: "/Insights/", label: "Insights" },
+  { href: "/about/", label: "About" },
+  { href: "/contact/", label: "Contact Us" },
+];
+
+const normalizePath = (path) => path.replace(/\/+$|^$/g, "").toLowerCase();
+const currentPath = normalizePath(Astro.url.pathname);
+
+const isActive = (href) => {
+  const normalizedHref = normalizePath(href);
+  return (
+    normalizedHref === currentPath ||
+    (normalizedHref !== "" && currentPath.startsWith(`${normalizedHref}/`))
+  );
+};
 ---
 
 <div id="main-menu" class="nav-links">
-
-  <a href="/" >Home </a>
-  <a href="/services/">Services</a>
-  <a href="/Insights/">Insights</a> 
-  <a href="/about/">About</a>
-  <a href="/contact/">Contact Us</a>
+  {links.map((link) => (
+    <a class={isActive(link.href) ? "active" : ""} href={link.href}>
+      {link.label}
+    </a>
+  ))}
 </div>
 
-<style>
-[data-icon] {
-    font-size: 2rem;
-    color: var(--brand-color);
-}
-  
-.nav-links a {
-  display: block;
-  text-align: center;
-  color: black;
-  padding: 5px 0;
-  text-decoration: none;
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-transform: uppercase;
- }
-
-.nav-links a:hover,
-.nav-links a:focus {
-  background-color: var(--color-burnt-orange);
-}
-
-.nav-links a.active,
-.nav-links a[aria-current="page"] {
-  color: var(--color-burnt-orange);
-  border-bottom: 2px solid var(--color-burnt-orange);
-}
-
-@media screen and (min-width: 636px) {
-  .nav-links {
-    margin-left: 5em;
-    display: block;
-    position: static;
-    width: auto;
-    background: none;
-  }
-
-  .nav-links a {
-    display: inline-block;
-    padding: 15px 20px;
-  }
-
-  .menu {
-    display: none;
-  }
-}
-
-html.dark {
-  background-color: #0d0950;
-  color: #fff;
-}
-
-.dark .menu {
-  background-color: #fff;
-  color: #000;
-}
-
-.dark .nav-links a:hover,
-.dark .nav-links a:focus {
-  color: #0d0950;
-}
-
-.dark .nav-links a {
-  color: #fff;
-}
-
-.dark a {
-  color: var(--color-burnt-orange);
-}

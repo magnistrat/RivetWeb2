@@ -3,6 +3,19 @@ export interface Path {
     pid: number
     langcode: string
 }
+
+export interface DrupalImage {
+    type: string;
+    id: string;
+    resourceIdObjMeta: {
+    alt: string,
+    title: string,
+    width: number,
+    height: number,
+    drupal_internal__target_id: number
+    }
+}    
+
 export interface Tags {
     id : string
     name : string
@@ -29,6 +42,7 @@ export interface DrupalNode extends Record<string, any> {
     default_langcode: boolean
     sticky: boolean
     path: Path
+    field_image: DrupalImage
     field_tags?: Tags[]
 }   
 

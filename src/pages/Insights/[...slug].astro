@@ -1,12 +1,10 @@
 ---
-import BlogPost from '../../layouts/BlogPost.astro';
+import BlogPost from '../../components/BlogPost.astro';
 import '../../styles/global.css';
 import { baseUrl, fetchUrl, getTags } from '../../api/drupal.ts';
-import type { DrupalNode, Tags } from '../../types';
+import type { DrupalNode, Tags, DrupalImage } from '../../types';
 import {getArticles} from "../../api/drupal.ts";
-
-// Fetch the specific article from Drupal using a JSON:API filter
-const drupalUrl = baseUrl + 'jsonapi/node/risk_article';
+declare module '../../layouts/BlogPost.astro';
 
    
 export function getHeadingsAndBookmarkedBody(body: string) {
@@ -70,6 +68,7 @@ export function getTagNamesById(
 }
 
 
+
 export async function getStaticPaths() {
     const articles = await getArticles();
     const tt = await getTags();
@@ -79,6 +78,8 @@ export async function getStaticPaths() {
       const { headings, bodyWithBookmarks } = getHeadingsAndBookmarkedBody(article.body.value);
       // Decode the tag list
       const tagNames = getTagNamesById(tt, article.field_tags);
+      const d_URL = baseUrl + 'jsonapi/node/file-file/'+ article.field_image?.id;
+
       return {
           params: {
               // Choose `path` to match the `[path]` routing value
@@ -88,6 +89,8 @@ export async function getStaticPaths() {
               title: article.title,
               Taglist: tagNames,
               Body: bodyWithBookmarks,
+              hero_url: d_URL,
+              hero_alt: article.field_image?.resourceIdObjMeta.alt,
               Headings: headings,
               Description: article.summary,
               created: new Date(article.created).toLocaleDateString('en-AU', {
@@ -100,10 +103,10 @@ export async function getStaticPaths() {
       });
 }
 
-const {title, created, Body, Description, Taglist, Headings} = Astro.props;
+const {title, created, Body, Description, Taglist, Headings, hero_url , hero_alt} = Astro.props;
 ---
 
-<BlogPost title={title} publishDate={created} description={Description} taglist={Taglist} headings={Headings} >
+<BlogPost title={title} publishDate={created} description={Description} taglist={Taglist} headings={Headings} hero_url={hero_url} hero_alt={hero_alt} >
   <div set:html={Body} />
 </BlogPost>
 

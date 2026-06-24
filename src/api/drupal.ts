@@ -1,6 +1,6 @@
 import {Jsona, type TJsonApiBody} from "jsona";
 import {DrupalJsonApiParams} from "drupal-jsonapi-params";
-import type {DrupalNode, Tags} from "../types.ts";
+import type {DrupalImage, DrupalNode, Tags} from "../types.ts";
 
 
 // Get the Drupal Base Url.
@@ -37,7 +37,7 @@ export const getArticles = async (): Promise<DrupalNode[]> => {
             "slug",
             "status",
             "field_tags",
-
+            "field_image",
          ])
         .addFilter("status", "1");
     const path: string = params.getQueryString();   
