@@ -9,25 +9,31 @@ import "../styles/global.css";
 
 <Layout pageTitle="What we Do">
   <Header />
-  <section id="about" >
-    <div>
-        <h1 class="text-4xl font-extrabold text-rivet-navy mb-6">How we help you</h1>
-        <p>At Rivet Risk Services we know you want to spend your day on running your business, not on worrying about things that may never happen
-            That’s why we developed the risk process that saves you time and money</p>
-        <h2>It Starts with You</h2>
+  <section id="what-we-do" class="page-section">
+    <div class="bg-white rounded-lg shadow-xl p-4">
+        <div class="bg-amber-50 rounded-lg shadow-xl md:p-1">
+            <h1 class="text-4xl font-extrabold text-mist-500">How we help you</h1>
+            <p>At Rivet Risk Services we know you want to spend your day on running your business, not on worrying about things that may never happen
+                That’s why we developed the risk process that saves you time and money</p>
+        </div>
+        <div class="bg-neutral-100 rounded-lg shadow-xl ">
+        <h4>It Starts with You</h4>
         <p>Our first meeting is half an hour with you to learn about your business. What keeps the business going and more important, what’s worrying 
             you right now. Rivet have seen all kinds of risks. That’s why we cover the Five Fingers of Risk with every client.</p>          
-        <h2>We Work in Your Workplace</h2> 
+        <h4>We Work in Your Workplace</h4> 
         <p>Nobody knows your business like you do. That’s why we like doing a site walk with you to understand how you do things. If your business 
             is complicated, we will recommend a full Day in the Life study to understand how you operate.</p>
-        <h2>Bringing it all Together</h2>
+        <h4>Bringing it all Together</h4>
         <p>Everything we learn from you goes into your Risk Register. The register holds the risks that matter to your business, and answers to how you 
             prevent them from becoming a problem.</p>
-        <h2>Simple Answers</h2>
+        <h4>Simple Answers</h4>
         <p>Instead of leaving you with a giant plan you can use as a doorstop, we give you simple practical tools you can use to make your business saferfrom day one.</p>
-        <h2 class="text-2xl font-bold text-rivet-navy mb-4">The Five Fingers of Risk</h2>
+        <h4 class="text-2xl font-bold text-rivet-navy mb-4">The Five Fingers of Risk</h4>
         <p class="font-medium text-neutral-400">A unified view of small business risk</p>
-            <div> <Image src={Fingers} alt="Image for Rebound Roadmap service" class="w-full object-cover rounded-md mb-4" /> </div>
+        </div>
+        <div> 
+            <Image src={Fingers} alt="Image for Rebound Roadmap service" class="w-full object-cover rounded-md mb-4" /> 
+        </div>
     </div>
   </section>
   <Footer />

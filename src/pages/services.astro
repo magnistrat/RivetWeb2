@@ -12,16 +12,15 @@ import "../styles/global.css";
     
 <Header />
   <!-- Page: Services -->
-  <section >
-    <div class="text-center mb-12">
+  <section class="m-10">
+    <div class="text-center mb-4">
         <h1 class="text-4xl font-extrabold text-rivet-navy mb-4">Services Scaled for Your Business</h1>
         <p class="text-xl text-steel-blue max-w-3xl mx-auto">From a simple starting-point risk assessment to a comprehensive recovery plan, choose the level of support you need.</p>
     </div>
-    <div class="displaycontainer">
-        <div> <Image src={Refinery} alt="Image for Risk Refinery service" class="w-full h-48 object-cover rounded-md mb-4" /> </div>    
-        <div> <Image src={Compass} alt="Image for Continuity Compass service" class="w-full h-48 object-cover rounded-md mb-4"/> </div>
-        <div> <Image src={Roadmap} alt="Image for Rebound Roadmap service" class="w-full h-48 object-cover rounded-md mb-4" /> </div>
-        <div>   
+    <div class="displaycontainer flex gap-4">
+        <div class="flex"> 
+        <div class="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg ">
+            <Image src={Refinery} alt="Image for Risk Refinery service" class="w-full h-48 object-cover rounded-md mb-4" /> 
             <h2 class="text-2xl font-bold text-rivet-navy mb-3">Tier 1: Risk Refinery</h2>
             <p class="text-2xl font-bold text-steel-blue mb-4">$900</p>
             <p class="text-slate-600 mb-4">A fast, high-impact starting point to identify your key vulnerabilities.</p>
@@ -30,22 +29,26 @@ import "../styles/global.css";
                 <li>Identify business-critical functions</li>
                 <li>Pinpoint key weather vulnerabilities</li>
             </ul>
-            <strong>Deliverable:</strong> A practical Risk Register you can use immediately.
-        </div> 
-        
-        <div>
+            <p><strong>Deliverable:</strong> A practical Risk Register you can use immediately.  </p>
+        </div>    
+        </div>
+        <div class="flex"> 
+        <div class="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg ">
+            <Image src={Compass} alt="Image for Continuity Compass service" class="w-full h-48 object-cover rounded-md mb-4"/> 
             <h2 class="text-2xl font-bold text-rivet-navy mb-3">Tier 2: Continuity Compass</h2>
-                <p class="text-3xl font-bold text-steel-blue mb-4">$1,800</p>
-                <p class="text-slate-600 mb-4">Our most popular package. Go from "what if" to "what to do".</p>
-                <ul class="list-disc list-inside space-y-2 text-steel-blue mb-6">
-                    <li>4-hour comprehensive workshop</li>
-                    <li>Includes everything from Tier 1</li>
-                    <li>Develop response & communication plans</li>
-                    <li><strong>Deliverables:</strong> Risk Register + practical Disaster Management Plan.</li>
-                </ul>
-        </div>          
-        
-        <div>
+            <p class="text-3xl font-bold text-steel-blue mb-4">$1,800</p>
+            <p class="text-slate-600 mb-4">Our most popular package. Go from "what if" to "what to do".</p>
+            <ul class="list-disc list-inside space-y-2 text-steel-blue mb-6">
+               <li>4-hour comprehensive workshop</li>
+               <li>Includes everything from Tier 1</li>
+               <li>Develop response & communication plans</li>
+            </ul>   
+               <strong>Deliverables:</strong> Risk Register + practical Disaster Management Plan.
+        </div>
+        </div>
+        <div class="flex"> 
+        <div class="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg">
+            <Image src={Roadmap} alt="Image for Rebound Roadmap service" class="w-full h-48 object-cover rounded-md mb-4" /> 
             <h2 class="text-2xl font-bold text-rivet-navy mb-3">Tier 3: Rebound Roadmap</h2>
             <p class="text-3xl font-bold text-steel-blue mb-4">Project Pricing</p>
             <p class="text-slate-600 mb-4">Custom, hands-on support to help you recover and rebuild smarter after an event.</p>
@@ -53,8 +56,10 @@ import "../styles/global.css";
                 <li>Post-event recovery support</li>
                 <li>Insurance claim documentation help</li>
                 <li>Supplier & premises relocation planning</li>
-                <li><strong>Deliverable:</strong> Custom-scoped project to get you back in business.</li>
-            </ul>
+            </ul>    
+            <strong>Deliverable:</strong> Custom-scoped project to get you back in business.
+            
+        </div>
         </div>
     </div>
 </section>
@@ -65,13 +70,30 @@ import "../styles/global.css";
 .displaycontainer {
   display: grid;
   grid-template-columns: auto auto auto;
-  padding: 10px;
+  padding: var(--space-2-5);
+  
 }
 .displaycontainer div {
-  padding: 10px;
-  font-size: 20px;
-  text-align: left;
+    padding: var(--space-4);
+
 }
+
+<div class="relative flex flex-col my-6 bg-white shadow-sm border border-slate-200 rounded-lg w-96">
+  <div class="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
+    <img src="https://images.unsplash.com/photo-1540553016722-983e48a2cd10?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="card-image" />
+  </div>
+  <div class="p-4">
+    <h6 class="mb-2 text-slate-800 text-xl font-semibold">
+      Website Review Check
+    </h6>
+    <p class="text-slate-600 leading-normal font-light">
+      The place is close to Barceloneta Beach and bus stop just 2 min by walk
+      and near to &quot;Naviglio&quot; where you can enjoy the main night life in
+      Barcelona.
+    </p>
+  </div>
+  
+</div>  
 
 
 </style>
