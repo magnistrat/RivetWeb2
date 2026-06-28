@@ -3,7 +3,6 @@
  *
  * POST /api/send
  */
-
 import type { APIRoute } from 'astro';
 import { randomUUID } from 'node:crypto';
 import { resend } from '../../lib/resend';
@@ -12,9 +11,8 @@ export const prerender = false;
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const { name, from, message, preventThreading } = body;
-
-    if (!name || !from) {
+    const { mode, name, from, email, subject, message, preventThreading } = body;
+    if (!from || !subject) {
       return new Response(
         JSON.stringify({ error: 'Missing required fields: name, email' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } },
@@ -27,12 +25,22 @@ export const POST: APIRoute = async ({ request }) => {
         { status: 400, headers: { 'Content-Type': 'application/json' } },
       );
     }
+    //== send send up for correct page
+    var mailto = "" as string;
+    var msg = message as string;
+    if (mode == "CTA") {
+        mailto = email;
+        msg = message;
+    } else {
+      mailto = 'cchinner@rivetrisk.com.au';
+      msg = `<p>From: ${name} - ${from}</p><p>${message}</p>`;
+    }
 
     const emailOptions: Parameters<typeof resend.emails.send>[0] = {
       from: import.meta.env.EMAIL_FROM || 'Rivet web <admin@rivetrisk.com.au>',
-      to: 'cchinner@rivetrisk.com.au',
-      subject: 'Web Contact Form',
-      html: `<p>From: ${from}</p><p>${message}</p>`,
+      to: mailto,
+      subject: subject,
+      html: msg,
     };
 
     if (preventThreading) {
@@ -40,7 +48,6 @@ export const POST: APIRoute = async ({ request }) => {
         'X-Entity-Ref-ID': randomUUID(),
       };
     }
-
     const { data, error } = await resend.emails.send(emailOptions);
 
     if (error) {

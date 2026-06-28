@@ -1,11 +1,9 @@
 ---
 import BlogPost from '../../components/BlogPost.astro';
 import '../../styles/global.css';
-import { baseUrl, fetchUrl, getTags } from '../../api/drupal.ts';
+import { baseUrl, getTags } from '../../api/drupal.ts';
 import type { DrupalNode, Tags, DrupalImage } from '../../types';
 import {getArticles} from "../../api/drupal.ts";
-declare module '../../layouts/BlogPost.astro';
-
    
 export function getHeadingsAndBookmarkedBody(body: string) {
   const headingRegex = /<(h[23])\b([^>]*)>([\s\S]*?)<\/\1>/gi;
@@ -78,7 +76,6 @@ export async function getStaticPaths() {
       const { headings, bodyWithBookmarks } = getHeadingsAndBookmarkedBody(article.body.value);
       // Decode the tag list
       const tagNames = getTagNamesById(tt, article.field_tags);
-      const d_URL = baseUrl + 'jsonapi/node/file-file/'+ article.field_image?.id;
 
       return {
           params: {
@@ -89,8 +86,8 @@ export async function getStaticPaths() {
               title: article.title,
               Taglist: tagNames,
               Body: bodyWithBookmarks,
-              hero_url: d_URL,
-              hero_alt: article.field_image?.resourceIdObjMeta.alt,
+              hero_url: '/src/assets/' + article.field_hero_image_tag,
+              hero_alt: article.field_imagealt,
               Headings: headings,
               Description: article.summary,
               created: new Date(article.created).toLocaleDateString('en-AU', {

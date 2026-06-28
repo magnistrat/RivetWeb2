@@ -1,52 +1,151 @@
- ---
+---
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
 import Header from "../components/header.astro";
-import PopUp from "../components/CTA PopUp.astro"
+export const prerender = false;
 ---
 <Layout pageTitle="Free Resources">
   <Header />
   <section id="lead-magnet" class="page-section">
     <div class="bg-white rounded-lg shadow-xl p-8 md:p-12">
-      
-    <header class="page-cta-header">
-      <h1 class="section-title">Protect Your Small Business—Before the Unexpected Hits</h1>
-      <h3 class="section-subtitle">Grab your free Emergency Checklist and SEQ Risk Management Toolkit to keep your team, your assets, and your hard work safe.</h3>
-    </header>
-
-    <hr class="section-divider">
-
-
+      <header class="page-cta-header">
+        <h1 class="section-title">Protect Your Small Business—Before the Unexpected Hits</h1>
+        <h3 class="section-subtitle">Grab your free Emergency Checklist and SEQ Risk Management Toolkit to keep your team, your assets, and your hard work safe.</h3>
+      </header>
+      <hr class="section-divider">
       <p class="section-paragraph">Running a small business in South East Queensland is incredibly rewarding. But between unpredictable severe weather, sudden operational disruptions, and the daily grind, risks are simply part of the landscape.
       When an emergency strikes, searching for policy numbers or scrambling for staff contact details shouldn't be what holds you up. <strong>Preparation isn't about expecting the worst—it’s about giving yourself total peace of mind so you can focus on what you do best.</strong>
       At Rivet Risk Services, we’re passionate about helping your small businesses stay resilient. That’s why we’ve built a straightforward, practical toolkit tailored specifically for our SEQ community.</p>
-
-    <hr class="section-divider">
-
+      <hr class="section-divider">
       <h2 class="section-heading">What’s Inside the Free Resilience Toolkit?</h2>
       <p class="section-paragraph">We’ve stripped away the complex corporate jargon to give you actionable, easy-to-use tools you can implement today.</p>
-      
       <ul class="section-list">
         <li class="section-list-item"><strong class="section-strong">The Master Emergency Checklist:</strong> A clean, printable template to house your most critical data. Keep your staff emergency contacts, insurance policy numbers, broker details, and utility accounts in one accessible place.</li>
         <li class="section-list-item"><strong class="section-strong">SEQ Risk Management Resource Guide:</strong> A curated collection of free local tools, weather alert links, and risk-mitigation strategies designed specifically for the unique challenges of doing business in South East Queensland.</li>
       </ul>
-      
       <blockquote class="section-blockquote">
         <strong class="section-blockquote-strong">Why download this today?</strong> In a crisis, every second counts. Having your critical numbers on a single sheet of paper can mean the difference between a minor hiccup 
         and a major financial loss. 
       </blockquote>
-  
-
+    </div>  
     <hr class="section-divider">
-    <div class="flex-container center">
-      <PopUp />
+    <div class="flex-container ">
+      <div class="mx-auto relative rounded-xl p-6 shadow-lg outline outline-black/15">
+        <div class="flex flex-col items-center gap-3 text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <polyline points="22,4 12,13 2,4"></polyline>
+          </svg>
+          <h3 class="m-0 text-lg text-[#0A2342]">Download your free toolkit</h3>
+          <span class="m-0 text-gray-600"><p>Sign up to get the Master Emergency Checklist and</p> <p> SEQ Risk Management Resource Guide</p></span>
+        </div>  
+        <div class="mt-4 bg-gray-50 p-3 rounded-md">
+        <form id="CTA-form" class="flex flex-col gap-2" autocomplete="on">
+          <div>
+            <input type="email" id="email-input" class="form-input w-full px-3 py-2 rounded-md border border-gray-400" placeholder="Email address" required />
+          </div>  
+          <button id="open-btn" type="submit" class="open-btn" class="submit-btn open-btn px-4 py-2 rounded-md">Get the free kit</button>
+        </form>
+        <div id="result" class="mt-3 hidden text-sm" style="display: none;"></div>
+      </div>
     </div>
-    <hr class="section-divider">
-    <footer class="section-footer">
-      <p class="section-footer-note">Brought to you by Rivet Risk Services</p>
-      <p class="section-footer-subtext">We’re more than just risk specialists—we’re your neighbors. Let’s protect your hard work together.</p>
-    </footer>
     </div>
   </section>
   <Footer /> 
 </Layout> 
+
+
+<script>
+
+  const openBtn = document.getElementById('open-btn');
+  const form = document.getElementById('CTA-form') as HTMLFormElement;
+  const resultDiv = document.getElementById('result') as HTMLDivElement;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    openBtn.disabled = true;
+    openBtn.textContent = 'Sending...';
+    resultDiv.style.display = 'none';
+
+    const email = (document.getElementById('email-input') as HTMLInputElement).value;
+    console.log("address:", email);
+
+     try {
+      const response = await fetch('/api/AddContacts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify( email ),
+      });
+   
+      console.log("here we have email:", email);
+      const data = await response.json();
+      resultDiv.style.display = 'block';
+
+      if (!response.ok) {
+        resultDiv.className = 'result error';
+        resultDiv.textContent = data.error || 'Failed to record email';
+      } else {
+        //= Action! we have a subscription
+        
+        resultDiv.className = 'result success';
+        resultDiv.innerHTML = '<br><strong>Thanks! Now check your email</strong><p>You should get a confirmation email soon, <strong>open it up</strong> and <strong>confirm your email</strong> so we can keep you up to date.</p>';
+        //== Now send the confirmation email
+        const mode = "CTA";
+        const name = "x";
+        const from = "admin@rivetrisk.com.au";
+        const mailto = email;
+        const subject = "Confirm your email";
+        const message = '<p>Hi, thanks for taking an interest in managing your risks</p><p>Can you confirm your email address for me?</p>'+
+         '<div style="align-items: center"><a href="https://cta-sub.rivetrisk.com.au/" style = "background-color: #C76B29 padding: 5px 10px">Confirm your email</a></div>'+
+         '<p>Once you have confirmed your email, we willl send the preview chapters to you right away.</p>'+
+        '<p>Thanks!</p>' +
+        '<p>- Carleton</p>';
+        try {
+          console.log("posting mailto:", mailto, " vs email:", email);
+          const response = await fetch('/api/send', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mode, name, from, email, subject, message }),
+          });
+      
+          const data = await response.json();
+          resultDiv.style.display = 'block';
+
+          if (!response.ok) {
+            resultDiv.className = 'result error';
+            resultDiv.textContent = data.error || 'Failed to send email';
+          } else {console.log("sendable")}
+      } catch {
+        resultDiv.style.display = 'block';
+        resultDiv.className = 'result error';
+        resultDiv.textContent = 'Network error 1. Please try again.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send Email';
+      }
+    }
+    } catch {
+      resultDiv.style.display = 'block';
+      resultDiv.className = 'result error';
+      resultDiv.textContent = 'Network error 2. Please try again.';
+    } finally {
+      openBtn.disabled = false;
+      openBtn.textContent = 'Get the free kit';
+    }
+  } );
+ </script>
+
+<style>
+  /* Button Styling */
+  .open-btn {
+    padding: var(--space-3) var(--space-10);
+    background-color: var(--rivet-orange);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .open-btn:hover { background-color: var(--secondary); color: var(--rivet-navy)}
+</style>

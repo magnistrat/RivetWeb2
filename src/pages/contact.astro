@@ -2,11 +2,9 @@
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
 import Header from "../components/header.astro";
-import { Resend } from 'resend';
- 
-const pageTitle = "Contact Us";
 export const prerender = false;
 
+const pageTitle = "Contact Us";
 ---
 <Layout {pageTitle}>
   <Header />
@@ -69,11 +67,14 @@ export const prerender = false;
     const from = (document.getElementById('from') as HTMLInputElement).value;
     const name = (document.getElementById('name') as HTMLInputElement).value;
     const message = (document.getElementById('message') as HTMLTextAreaElement).value;
+    const subject = "Web Contact Form"
+    const mailto = "";
+    const mode = "SEND"
      try {
       const response = await fetch('/api/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, from, message }),
+        body: JSON.stringify({ mode, name, from, subject, mailto, message }),
       });
    
       const data = await response.json();

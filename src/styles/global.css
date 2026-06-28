@@ -225,7 +225,7 @@ strong, b {
 }
 
 .page-section {
-  padding: var(--space-10);
+  padding: var(--space-20);
   background-color: var(--bg-primary);
 }
 

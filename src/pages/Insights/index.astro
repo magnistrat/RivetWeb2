@@ -1,13 +1,17 @@
 ---
-import "../../styles/global.css";
 import Layout from '../../layouts/Layout.astro';
 import Footer from '../../components/footer.astro';
 import Header from '../../components/header.astro';
+import ImageCard from '../../components/imageCard.astro';
 import type { DrupalNode, Tags } from "../../types";
 import {getArticles} from "../../api/drupal.ts";
+import "../../styles/global.css";
+import dayjs from 'dayjs';
+
 
 // Get all published articles.
 const allPosts = await getArticles();
+const sortedPosts = allPosts.toSorted((a, b) => new Date(b.created) - new Date(a.created));
 const groupedPosts = allPosts.reduce((acc: any, post: DrupalNode) => {
 	const year = post.created.toString().slice(0, 4);
 	if (!acc[year]) {
@@ -19,55 +23,71 @@ const groupedPosts = allPosts.reduce((acc: any, post: DrupalNode) => {
 
 const sortedYears = Object.keys(groupedPosts).sort((a, b) => parseInt(b) - parseInt(a));
 
-const formatDate = (date: string) => {
-	const month = date.slice(5, 7).padStart(2, '0');
-	const day = date.slice(8, 10).padStart(2, '0');
-	return `${month}-${day}`;
-};
-
 ---
 <Layout pageTitle="Risk Insights">
 <Header />
+
  <!-- Page: Risk Insights -->
-<div class="text-left pl-40">
-	<h1 class="text-4xl font-extrabold text-rivet-navy mb-4">Risk Insights</h1>
-	<p class="text-xl text-steel-blue max-w-3xl">Rivet Risk hears from many small businesses just like yours. Learn how they are making their future safer.</p>
-</div>
-<main>
-		<section class="archive-container">
-		{
-			sortedYears.map((year: string) => (
-				<div class="year-section" id={`year-${year}`} key={year}>
-					<h2 class="year-title">
-						{year}
-						<span class="year-count">{groupedPosts[year].length} posts</span>
-					</h2>
-					<ul class="post-list">
-						{
-							groupedPosts[year].map((post: DrupalNode) => (
-								<li class="post-item" >
-									<a href={`.${post.path.alias}`}  class="post-link"> 
-										<span class="post-date">{post.created.toString().slice(4,10)}</span>
-										<h3 class="post-title">{post.title}</h3>
-										<p>[{post.field_image?.altText}]</p>
-										{post.articletaglist && post.articletaglist.length > 0 && (
-											<div class="post-tags">
-												{post.articletaglist.slice(0, 3).map((onetag: Tags) => (<span class="post-tag">#{onetag}</span>
-												))}
-												{post.articletaglist.length > 3 && (
-														<span class="post-tag">...{post.articletaglist.length - 3}</span>
-													)}
-											</div>
-										)}
-									</a>
-								</li>
-							))
-						}
-					</ul>
-				</div>
-			))
-		}
-	</section>
+ <blog_header class="mb-16 text-center">
+    <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">Risk Insights</h1>
+    <p class="mt-4 text-lg text-slate-600">Rivet Risk hears from many small businesses just like yours. Learn how they are making their future safer.</p>
+  </blog_header>
+
+<main class="grow">
+<!-- Article Grid -->
+ <div class="mx-auto mt-12 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:max-w-none lg:grid-cols-3">
+	<!-- Card 1 -->
+	<blogcard class="flex flex-col overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-slate-200 duration-200 hover:-translate-y-1 hover:shadow-xl">
+      <div class="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
+         <ImageCard imagePath = {'/src/assets/' + sortedPosts[0].field_hero_image_tag} altText={sortedPosts[0].field_imagealt} />
+      </div>
+      <div class="flex flex-1 flex-col p-6">
+        <div class="flex items-center gap-2 text-xs">
+          <time datetime="20 June 2026" class="text-slate-500">{dayjs(sortedPosts[0].created).format('DD MMM YYYY')}</time>
+          <span class="rounded-full bg-slate-100 px-2 py-1 font-medium text-slate-600">Design</span>
+        </div>
+        <h3 class="mt-3 text-xl font-semibold text-slate-900">
+          <a href={'.'+sortedPosts[0].path.alias} class="stretched-link hover:text-indigo-600">{sortedPosts[0].title}</a>
+        </h3>
+        <p class="mt-2 text-sm text-slate-600 line-clamp-2">{sortedPosts[0].field_seo_description}</p>
+      </div>
+	</blogcard>
+
+	<!-- Card 2 -->
+	<blogcard class="flex flex-col overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-slate-200 duration-200 hover:-translate-y-1 hover:shadow-xl">
+      <div class="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
+        <ImageCard imagePath = {'/src/assets/' + sortedPosts[1].field_hero_image_tag} altText={sortedPosts[1].field_imagealt} />
+      </div>
+      <div class="flex flex-1 flex-col p-6">
+        <div class="flex items-center gap-2 text-xs">
+          <time datetime="20 June 2026" class="text-slate-500">{dayjs(sortedPosts[1].created).format('DD MMM YYYY')}</time>
+          <span class="rounded-full bg-slate-100 px-2 py-1 font-medium text-slate-600">Design</span>
+        </div>
+        <h3 class="mt-3 text-xl font-semibold text-slate-900">
+          <a href={'.'+sortedPosts[1].path.alias} class="stretched-link hover:text-indigo-600">{sortedPosts[1].title}</a>
+        </h3>
+        <p class="mt-2 text-sm text-slate-600 line-clamp-2">{sortedPosts[1].field_seo_description}</p>
+      </div>
+	</blogcard>
+
+	<!-- Card 3 -->
+	<blogcard class="flex flex-col overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-slate-200 duration-200 hover:-translate-y-1 hover:shadow-xl">
+      <div class="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
+       <ImageCard imagePath = {'/src/assets/' + sortedPosts[2].field_hero_image_tag} altText={sortedPosts[2].field_imagealt} />
+      </div>
+      <div class="flex flex-1 flex-col p-6">
+        <div class="flex items-center gap-2 text-xs">
+          <time datetime="20 June 2026" class="text-slate-500">{dayjs(sortedPosts[2].created).format('DD MMM YYYY')}</time>
+          <span class="rounded-full bg-slate-100 px-2 py-1 font-medium text-slate-600">Design</span>
+        </div>
+        <h3 class="mt-3 text-xl font-semibold text-slate-900">
+          <a href={'.'+sortedPosts[2].path.alias} class="stretched-link hover:text-indigo-600">{sortedPosts[2].title}</a>
+        </h3>
+        <p class="mt-2 text-sm text-slate-600 line-clamp-2">{sortedPosts[2].field_seo_description}</p>
+      </div>
+	</blogcard>
+ </div>
+ 
 </main>
 <Footer />
 </Layout>
@@ -85,10 +105,10 @@ const formatDate = (date: string) => {
 		margin-bottom: var(--space-8);
 	}
 	.year-title {
-		font-size: 1.25rem;
+		font-size: 2.5rem;
 		font-weight: 700;
+		color: var(--color-navy);
 		margin: 0 0 var(--space-4) 0;
-	
 		display: flex;
 		align-items: center;
 		gap: var(--space-3);
@@ -223,35 +243,5 @@ const formatDate = (date: string) => {
 			text-overflow: unset;
 		}
 	}
-	html.dark .year-title {
-		color: var(--accent);
-	}
-	html.dark .year-title::before {
-		background: linear-gradient(180deg, var(--accent), #FDBA74);
-	}
-	html.dark .year-count {
-		background: var(--bg-secondary);
-		color: var(--text-muted);
-	}
-	html.dark .post-link:hover {
-		color: var(--accent);
-	}
-	html.dark .post-item:hover {
-		background: rgba(251, 146, 60, 0.15);
-	}
-	html.dark .post-title {
-		color: var(--text-primary);
-	}
-	html.dark .post-tag {
-		background: var(--bg-secondary);
-	}
-	html.dark .load-more-btn {
-		background: var(--bg-secondary);
-		border-color: var(--border-color);
-		color: var(--text-primary);
-	}
-	html.dark .load-more-btn:hover {
-		background: var(--accent);
-		color: white;
-	}
+	
 </style>

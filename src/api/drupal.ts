@@ -37,7 +37,9 @@ export const getArticles = async (): Promise<DrupalNode[]> => {
             "slug",
             "status",
             "field_tags",
-            "field_image",
+            "field_hero_image_tag",
+            "field_imagealt",
+            "field_seo_description",
          ])
         .addFilter("status", "1");
     const path: string = params.getQueryString();   

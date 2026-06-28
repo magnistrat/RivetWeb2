@@ -26,8 +26,9 @@ export interface DrupalNode extends Record<string, any> {
     id: string
     type: string
     langcode: string
-    field_slug: string
-    summary: string
+    field_seo_description: string
+    field_hero_image_tag: string
+    field_imagealt: string
     slug: string
     status: boolean
     drupal_internal__nid: number
@@ -42,7 +43,6 @@ export interface DrupalNode extends Record<string, any> {
     default_langcode: boolean
     sticky: boolean
     path: Path
-    field_image: DrupalImage
     field_tags?: Tags[]
 }   
 

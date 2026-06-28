@@ -32,7 +32,7 @@ export const header = {
 
 export const hero = {
   headline:
-    "Stop Guessing, Turn Business Anxiety into a Confident Action Plan",
+    "Turn Business Anxiety into a Confident Action Plan",
   subheadline:
     "Practical, affordable natural disaster risk management for small businesses across South East Queensland. We help you prepare for unexpected events, before they hit.",
   primaryCta: {
