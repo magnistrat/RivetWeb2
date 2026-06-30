@@ -2,102 +2,46 @@
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
 import Header from "../components/header.astro";
-export const prerender = false;
 
 const pageTitle = "Contact Us";
 ---
 <Layout {pageTitle}>
   <Header />
   <main class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-
     <div class="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 transform transition-all duration-300 hover:shadow-2xl">  
+    <div class="justify-center pl-50">
+       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+         <rect x="2" y="4" width="20" height="16" rx="2" />
+          <polyline points="22,4 12,13 2,4" />
+      </svg>   
+    </div>
+
+      <div class="pb-10">
       <h1>Contact Us</h1>
-            <p>We'd love to hear about the risks that keep you awake at night. Fill out the form below and we'll get back to you shortly.</p>
-    <form id="send-form" class="form">
-
-      <div class="field">
-        <label for="name">Name</label>
-        <input
-          id="name"
-          type="text"
-          required
-          placeholder="Your name"
-          class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100 transition-all duration-200"
-        />
+      <p>We'd love to hear about the risks that keep you awake at night. Fill out the form below and we'll get back to you shortly.</p>
       </div>
-
-      <div class="field">
-      <label for="from">Email</label>
-      <input
-        id="from"
-        type="email"
-        value=""
-        required
-        placeholder="Email address"
-        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100 transition-all duration-200"
-      />
-    </div>
-
+    <form
+       action="https://formspree.io/f/mdkyjdwq"
+      class="form"
+      target="_top"
+      method="POST"
+    >
     <div class="field">
-      <label for="message">How can we help you?</label>
-      <textarea id="message" rows={4} required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 text-sm focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-4 focus:ring-indigo-100 transition-all duration-200"></textarea>
-    </div>
-
-    <button type="submit" id="submit-btn">Send Email</button>
-  </form>
-
-  <div id="result" class="result" style="display: none;"></div>
+        <label class="label" for="email">Email</label>
+        <input class="input " id="email" name="email" required />
+      </div>
+      <div class="field">
+        <label class="label" for="message">Message</label>
+        <textarea class="textarea" id="message" name="message"></textarea>
+      </div>
+      <div class="fs-button-group ">
+        <button class="button" type="submit">Submit</button>
+      </div>
+    </form>
   </div>
   </main>
 <Footer /> 
 </Layout> 
-
-
-<script>
-  const form = document.getElementById('send-form') as HTMLFormElement;
-  const btn = document.getElementById('submit-btn') as HTMLButtonElement;
-  const resultDiv = document.getElementById('result') as HTMLDivElement;
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    btn.disabled = true;
-    btn.textContent = 'Sending...';
-    resultDiv.style.display = 'none';
-
-    const from = (document.getElementById('from') as HTMLInputElement).value;
-    const name = (document.getElementById('name') as HTMLInputElement).value;
-    const message = (document.getElementById('message') as HTMLTextAreaElement).value;
-    const subject = "Web Contact Form"
-    const mailto = "";
-    const mode = "SEND"
-     try {
-      const response = await fetch('/api/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mode, name, from, subject, mailto, message }),
-      });
-   
-      const data = await response.json();
-      resultDiv.style.display = 'block';
-
-      if (!response.ok) {
-        resultDiv.className = 'result error';
-        resultDiv.textContent = data.error || 'Failed to send email';
-      } else {
-        resultDiv.className = 'result success';
-        resultDiv.innerHTML = `<strong>Thanks for making contact. We'll be in touch soon.</strong>`;
-      }
-    } catch {
-      resultDiv.style.display = 'block';
-      resultDiv.className = 'result error';
-      resultDiv.textContent = 'Network error. Please try again.';
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Send Email';
-    }
-  });
-</script>
-
 
 <style>
  .form {
@@ -122,6 +66,9 @@ const pageTitle = "Contact Us";
   .field textarea {
     padding: var(--space-2) var(--space-3);
     background: #fff;
+    border-width: 1px;
+    border-color: var(--color-navy);
+    border-radius: 5px;
   }
 
   .hint {
@@ -130,13 +77,13 @@ const pageTitle = "Contact Us";
   }
 
   button[type='submit'] {
-    padding: var(--space-2-5) var(--space-4);
-    background: #1a1a1a;
-    color: #fff;
+    padding: var(--space-2-5) var(--space-6);
+    background: var(--rivet-orange);
+    color: black;
     border: none;
     border-radius: 0.375rem;
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
   }
 

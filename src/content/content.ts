@@ -12,7 +12,6 @@ export const siteConfig = {
   quickLinks: [
     { label: "Services", href: "/services" },
     { label: "Insights", href: "/Insights" },
-    { label: "XXX", href: "#faq" }
   ],
   legalLinks: [
     { label: "Privacy Policy", href: "/privacy" },

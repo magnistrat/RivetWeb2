@@ -2,7 +2,6 @@
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/footer.astro";
 import Header from "../components/header.astro";
-export const prerender = false;
 ---
 <Layout pageTitle="Free Resources">
   <Header />
@@ -29,111 +28,14 @@ export const prerender = false;
       </blockquote>
     </div>  
     <hr class="section-divider">
-    <div class="flex-container ">
-      <div class="mx-auto relative rounded-xl p-6 shadow-lg outline outline-black/15">
-        <div class="flex flex-col items-center gap-3 text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-            <polyline points="22,4 12,13 2,4"></polyline>
-          </svg>
-          <h3 class="m-0 text-lg text-[#0A2342]">Download your free toolkit</h3>
-          <span class="m-0 text-gray-600"><p>Sign up to get the Master Emergency Checklist and</p> <p> SEQ Risk Management Resource Guide</p></span>
-        </div>  
-        <div class="mt-4 bg-gray-50 p-3 rounded-md">
-        <form id="CTA-form" class="flex flex-col gap-2" autocomplete="on">
-          <div>
-            <input type="email" id="email-input" class="form-input w-full px-3 py-2 rounded-md border border-gray-400" placeholder="Email address" required />
-          </div>  
-          <button id="open-btn" type="submit" class="open-btn" class="submit-btn open-btn px-4 py-2 rounded-md">Get the free kit</button>
-        </form>
-        <div id="result" class="mt-3 hidden text-sm" style="display: none;"></div>
-      </div>
-    </div>
+    <div class="flex-container items-center justify-center">
+      <button class="ml-onclick-form open-btn" onclick="ml('show', 'XdFb5z', true)">Get the Tookit</button>
     </div>
   </section>
-  <Footer /> 
-</Layout> 
+  <Footer />
+</Layout>
 
 
-<script>
-
-  const openBtn = document.getElementById('open-btn');
-  const form = document.getElementById('CTA-form') as HTMLFormElement;
-  const resultDiv = document.getElementById('result') as HTMLDivElement;
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    openBtn.disabled = true;
-    openBtn.textContent = 'Sending...';
-    resultDiv.style.display = 'none';
-
-    const email = (document.getElementById('email-input') as HTMLInputElement).value;
-    console.log("address:", email);
-
-     try {
-      const response = await fetch('/api/AddContacts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify( email ),
-      });
-   
-      console.log("here we have email:", email);
-      const data = await response.json();
-      resultDiv.style.display = 'block';
-
-      if (!response.ok) {
-        resultDiv.className = 'result error';
-        resultDiv.textContent = data.error || 'Failed to record email';
-      } else {
-        //= Action! we have a subscription
-        
-        resultDiv.className = 'result success';
-        resultDiv.innerHTML = '<br><strong>Thanks! Now check your email</strong><p>You should get a confirmation email soon, <strong>open it up</strong> and <strong>confirm your email</strong> so we can keep you up to date.</p>';
-        //== Now send the confirmation email
-        const mode = "CTA";
-        const name = "x";
-        const from = "admin@rivetrisk.com.au";
-        const mailto = email;
-        const subject = "Confirm your email";
-        const message = '<p>Hi, thanks for taking an interest in managing your risks</p><p>Can you confirm your email address for me?</p>'+
-         '<div style="align-items: center"><a href="https://cta-sub.rivetrisk.com.au/" style = "background-color: #C76B29 padding: 5px 10px">Confirm your email</a></div>'+
-         '<p>Once you have confirmed your email, we willl send the preview chapters to you right away.</p>'+
-        '<p>Thanks!</p>' +
-        '<p>- Carleton</p>';
-        try {
-          console.log("posting mailto:", mailto, " vs email:", email);
-          const response = await fetch('/api/send', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mode, name, from, email, subject, message }),
-          });
-      
-          const data = await response.json();
-          resultDiv.style.display = 'block';
-
-          if (!response.ok) {
-            resultDiv.className = 'result error';
-            resultDiv.textContent = data.error || 'Failed to send email';
-          } else {console.log("sendable")}
-      } catch {
-        resultDiv.style.display = 'block';
-        resultDiv.className = 'result error';
-        resultDiv.textContent = 'Network error 1. Please try again.';
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Send Email';
-      }
-    }
-    } catch {
-      resultDiv.style.display = 'block';
-      resultDiv.className = 'result error';
-      resultDiv.textContent = 'Network error 2. Please try again.';
-    } finally {
-      openBtn.disabled = false;
-      openBtn.textContent = 'Get the free kit';
-    }
-  } );
- </script>
 
 <style>
   /* Button Styling */

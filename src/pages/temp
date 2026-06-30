@@ -87,3 +87,69 @@
           </div>
         </div>
 
+ // Wrap the logic in a function so it can be called on page navigation
+  function setupContactForm() {
+    const form = document.getElementById('send-form') as HTMLFormElement | null;
+    const btn = document.getElementById('submit-btn') as HTMLButtonElement | null;
+    const resultDiv = document.getElementById('result') as HTMLDivElement | null;
+
+    // Safely exit if the elements aren't on the current page 
+    // (Prevents crashing on other pages)
+    if (!form || !btn || !resultDiv) {
+      return;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault(); // Prevents the page from refreshing
+      
+      console.log("Form submission triggered");
+      
+      const fromInput = document.getElementById('from') as HTMLInputElement;
+      const nameInput = document.getElementById('name') as HTMLInputElement;
+      const messageInput = document.getElementById('message') as HTMLTextAreaElement;
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      resultDiv.style.display = 'none';
+
+      const from = fromInput.value.trim();
+      const name = nameInput.value.trim();
+      const message = messageInput.value.trim();
+
+      
+      try {
+        const response = await fetch('/api/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, from, message }),
+        });
+        console.log("response:", response);
+        const data = await response.json();
+        resultDiv.style.display = 'block';
+
+        if (!response.ok) {
+          resultDiv.className = 'result error';
+          resultDiv.textContent = data.error || 'Failed to send email';
+        } else {
+          resultDiv.className = 'result success';
+          resultDiv.innerHTML = '<strong>Thanks for making contact. We\'ll be in touch soon.</strong>';
+          form.reset(); // Optional: clears the form on success
+        }
+      } catch {
+        resultDiv.style.display = 'block';
+        resultDiv.className = 'result error';
+        resultDiv.textContent = 'Network error. Please try again.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send Email';
+      }
+    });
+  }
+
+  // Listen for Astro's page load event (works with or without Client Router)
+  document.addEventListener('astro:page-load', setupContactForm);
